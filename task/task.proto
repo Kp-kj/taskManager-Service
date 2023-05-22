@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package task;
+option go_package="./task";
+
+message Request {
+  string ping = 1;
+}
+
+message Response {
+  string pong = 1;
+}
+
+service Task {
+  rpc Ping(Request) returns(Response);
+}
