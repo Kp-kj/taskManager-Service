@@ -25,6 +25,7 @@ require (
 	github.com/go-openapi/jsonreference v0.20.1 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
@@ -48,6 +49,7 @@ require (
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
+	github.com/shopspring/decimal v1.3.1
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.8 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.8 // indirect

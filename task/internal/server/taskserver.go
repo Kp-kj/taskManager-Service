@@ -22,7 +22,37 @@ func NewTaskServer(svcCtx *svc.ServiceContext) *TaskServer {
 	}
 }
 
-func (s *TaskServer) Ping(ctx context.Context, in *task.Request) (*task.Response, error) {
-	l := logic.NewPingLogic(ctx, s.svcCtx)
-	return l.Ping(in)
+func (s *TaskServer) CreateCuratorialTask(ctx context.Context, in *task.CreatePublishTaskInput) (*task.Mistake, error) {
+	l := logic.NewCreateCuratorialTaskLogic(ctx, s.svcCtx)
+	return l.CreateCuratorialTask(in)
+}
+
+func (s *TaskServer) QueryTaskList(ctx context.Context, in *task.PublishTaskInput) (*task.RePublishTask, error) {
+	l := logic.NewQueryTaskListLogic(ctx, s.svcCtx)
+	return l.QueryTaskList(in)
+}
+
+func (s *TaskServer) QueryTaskDetails(ctx context.Context, in *task.TaskDetailsInput) (*task.ReTaskDetails, error) {
+	l := logic.NewQueryTaskDetailsLogic(ctx, s.svcCtx)
+	return l.QueryTaskDetails(in)
+}
+
+func (s *TaskServer) QueryUserLaunchTaskList(ctx context.Context, in *task.UserLaunchTaskListInput) (*task.RePublishTask, error) {
+	l := logic.NewQueryUserLaunchTaskListLogic(ctx, s.svcCtx)
+	return l.QueryUserLaunchTaskList(in)
+}
+
+func (s *TaskServer) CreateLabel(ctx context.Context, in *task.CreateLabelInput) (*task.Mistake, error) {
+	l := logic.NewCreateLabelLogic(ctx, s.svcCtx)
+	return l.CreateLabel(in)
+}
+
+func (s *TaskServer) DeleteLabel(ctx context.Context, in *task.DeleteLabelInput) (*task.Mistake, error) {
+	l := logic.NewDeleteLabelLogic(ctx, s.svcCtx)
+	return l.DeleteLabel(in)
+}
+
+func (s *TaskServer) QueryLabelList(ctx context.Context, in *task.LabelListInput) (*task.ReLabelList, error) {
+	l := logic.NewQueryLabelListLogic(ctx, s.svcCtx)
+	return l.QueryLabelList(in)
 }

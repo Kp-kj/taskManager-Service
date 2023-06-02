@@ -13,11 +13,32 @@ import (
 )
 
 type (
-	Request  = task.Request
-	Response = task.Response
+	CreateLabelInput        = task.CreateLabelInput
+	CreatePublishTaskInput  = task.CreatePublishTaskInput
+	DeleteLabelInput        = task.DeleteLabelInput
+	LabelListInput          = task.LabelListInput
+	Mistake                 = task.Mistake
+	PaginationData          = task.PaginationData
+	ParticipantBak          = task.ParticipantBak
+	PublishTaskInput        = task.PublishTaskInput
+	ReLabelList             = task.ReLabelList
+	RePublishTask           = task.RePublishTask
+	RePublishTaskBak        = task.RePublishTaskBak
+	ReTaskDetails           = task.ReTaskDetails
+	TaskBak                 = task.TaskBak
+	TaskDemand              = task.TaskDemand
+	TaskDemandBak           = task.TaskDemandBak
+	TaskDetailsInput        = task.TaskDetailsInput
+	UserLaunchTaskListInput = task.UserLaunchTaskListInput
 
 	Task interface {
-		Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+		CreateCuratorialTask(ctx context.Context, in *CreatePublishTaskInput, opts ...grpc.CallOption) (*Mistake, error)
+		QueryTaskList(ctx context.Context, in *PublishTaskInput, opts ...grpc.CallOption) (*RePublishTask, error)
+		QueryTaskDetails(ctx context.Context, in *TaskDetailsInput, opts ...grpc.CallOption) (*ReTaskDetails, error)
+		QueryUserLaunchTaskList(ctx context.Context, in *UserLaunchTaskListInput, opts ...grpc.CallOption) (*RePublishTask, error)
+		CreateLabel(ctx context.Context, in *CreateLabelInput, opts ...grpc.CallOption) (*Mistake, error)
+		DeleteLabel(ctx context.Context, in *DeleteLabelInput, opts ...grpc.CallOption) (*Mistake, error)
+		QueryLabelList(ctx context.Context, in *LabelListInput, opts ...grpc.CallOption) (*ReLabelList, error)
 	}
 
 	defaultTask struct {
@@ -31,7 +52,37 @@ func NewTask(cli zrpc.Client) Task {
 	}
 }
 
-func (m *defaultTask) Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+func (m *defaultTask) CreateCuratorialTask(ctx context.Context, in *CreatePublishTaskInput, opts ...grpc.CallOption) (*Mistake, error) {
 	client := task.NewTaskClient(m.cli.Conn())
-	return client.Ping(ctx, in, opts...)
+	return client.CreateCuratorialTask(ctx, in, opts...)
+}
+
+func (m *defaultTask) QueryTaskList(ctx context.Context, in *PublishTaskInput, opts ...grpc.CallOption) (*RePublishTask, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.QueryTaskList(ctx, in, opts...)
+}
+
+func (m *defaultTask) QueryTaskDetails(ctx context.Context, in *TaskDetailsInput, opts ...grpc.CallOption) (*ReTaskDetails, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.QueryTaskDetails(ctx, in, opts...)
+}
+
+func (m *defaultTask) QueryUserLaunchTaskList(ctx context.Context, in *UserLaunchTaskListInput, opts ...grpc.CallOption) (*RePublishTask, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.QueryUserLaunchTaskList(ctx, in, opts...)
+}
+
+func (m *defaultTask) CreateLabel(ctx context.Context, in *CreateLabelInput, opts ...grpc.CallOption) (*Mistake, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.CreateLabel(ctx, in, opts...)
+}
+
+func (m *defaultTask) DeleteLabel(ctx context.Context, in *DeleteLabelInput, opts ...grpc.CallOption) (*Mistake, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.DeleteLabel(ctx, in, opts...)
+}
+
+func (m *defaultTask) QueryLabelList(ctx context.Context, in *LabelListInput, opts ...grpc.CallOption) (*ReLabelList, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.QueryLabelList(ctx, in, opts...)
 }

@@ -3,14 +3,151 @@ syntax = "proto3";
 package task;
 option go_package="./task";
 
-message Request {
-  string ping = 1;
+// CreatePublishTaskInput 策展任务信息接收表
+message CreatePublishTaskInput {
+  string creator = 1;   // 创建者
+  string tweetAddress = 2;  // 推特文章地址
+  repeated string label = 3; // 标签
+  double awardBudget = 4; // 奖励预算
+  sint64 maxUser = 5; // 最大奖励用户数
+  double awardAmount = 6; // 奖励金额
+  repeated taskBak taskBak = 7;// 任务要求
 }
 
-message Response {
-  string pong = 1;
+message taskBak{
+  uint64 taskId = 1; // 任务ID
+  int32  taskName = 2; // 任务名称,1-转推，2-引用，3-回复,4-喜欢,5-关注
+  string taskDemand = 3; // 任务要求
+  string article = 4; // 任务文案
+}
+
+
+message Mistake {
+  string err = 1;
+}
+
+// 策展任务信息返回表
+message RePublishTask {
+  PaginationData paginationData = 1;
+  repeated RePublishTaskBak rePublishTaskBak = 2;
+
+}
+// 策展任务信息返回表
+message RePublishTaskBak {
+  uint64 taskId = 1;   // ID
+  string createdAt = 2;// 创建时间
+  string creator = 3;     // 创建者ID
+  string creatorName = 4;  // 创建者账户
+  string creatorNick = 5;  // 创建者昵称
+  string creatorAvatar = 6;// 用户头像
+  int32 status = 7;      // 任务状态，1-进行中,0-已结束
+  string tweetDetails = 8; // 推特文章详情
+  string tweetPicture = 9; // 推特文章图片
+  string label = 10;   // 标签
+  double awardBudget = 11;  // 奖励预算
+  sint64 maxUser = 12;   // 最大奖励用户数
+  double awardAmount =13;  // 奖励金额
+  string endTime = 14;      // 截止时间
+  sint64 accomplish = 15;   // 已完成人数
+  repeated taskDemand taskDemand = 16;
+
+}
+
+message taskDemand{
+  uint64 taskId = 1; // 任务ID
+  int32  taskName = 2; // 任务名称,1-转推，2-引用，3-回复,4-喜欢,5-关注
+  string taskDemand = 3; // 任务要求
+  string article = 4; // 任务文案
+}
+
+
+// 查询策展任务输入
+message PublishTaskInput {
+  int32 status = 1; // 筛选，0-已结束，1-进行中
+  int32 currPage = 2; // 当前页面
+  int32 maxNum =3; // 最大输出数
+}
+
+// 任务详情
+message ReTaskDetails {
+  RePublishTaskBak rePublishTaskSrt = 1;// 策展任务信息
+  repeated ParticipantBak Participant = 2;// 策展任务参与者列表
+  repeated TaskDemandBak TaskDemandBak = 3;// 任务要求
+
+
+
+}
+message TaskDemandBak {
+  uint64 taskID = 1;  // 任务ID
+  int64 taskName = 2; // 任务名称,1-转推，2-引用，3-回复,4-喜欢,5-关注
+  string taskDemand = 3; // 任务要求
+  string article = 4;  // 任务文案
+  int32 done = 5;     // 是否完成，1-已完成，0-未完成
+}
+message ParticipantBak {
+  string userId = 1;  // 用户ID
+  string userName = 2;   // 用户账户
+  string nickName = 3;   // 用户昵称
+  string avatar = 4;    // 照片地址
+  double awardAmount = 5;// 奖励金额
+  uint64 taskID = 6;     // 任务ID
+  int32 status = 7;    // 任务状态，1-进行中，0-已结束
+}
+
+
+
+// 分页数据格式
+message PaginationData {
+  int64 total = 1; // 数据总量
+  int32 page = 2; // 当前页码
+  int32 per_page = 3;// 约束的最大数据量
+}
+
+// 查询任务详情入参
+message TaskDetailsInput {
+  uint64 taskId = 1;// 任务ID
+  string userId = 2;//  用户ID
+}
+
+// 查询个人发起任务列表+参与任务入参
+message UserLaunchTaskListInput {
+  string userId = 1; //  用户ID
+  int32 currPage = 2; //  当前页面
+  int32 maxNum = 3; // 最大输出数
+  int32 status = 4; // 查询状态，1-个人发起任务列表，2-个人参与任务列表
+}
+
+// 创建标签入参
+message CreateLabelInput {
+  string userId = 1; // 用户ID
+  string label = 2; // 标签信息
+}
+
+// 删除标签入参
+message DeleteLabelInput {
+  uint64 id = 1; // 标签ID
+}
+
+// 获取标签列表入参
+message LabelListInput {
+  string userId = 1; // 用戶ID
+}
+
+// 获取标签列表出参
+message ReLabelList {
+  uint64 iD = 1;
+  string creator = 2; // 创建者
+  string content = 3; // 内容
 }
 
 service Task {
-  rpc Ping(Request) returns(Response);
+
+  rpc CreateCuratorialTask(CreatePublishTaskInput) returns(Mistake); // 创建策展任务
+  rpc QueryTaskList(PublishTaskInput) returns(RePublishTask); // 查询策展任务列表
+  rpc QueryTaskDetails(TaskDetailsInput) returns(ReTaskDetails); // 查询任务详情
+  rpc QueryUserLaunchTaskList(UserLaunchTaskListInput) returns(RePublishTask); // 查询个人发起任务列表+参与任务
+  rpc CreateLabel(CreateLabelInput) returns(Mistake); // 创建标签
+  rpc DeleteLabel(DeleteLabelInput) returns(Mistake); // 删除标签
+  rpc QueryLabelList(LabelListInput) returns(ReLabelList); // 获取标签列表
+
 }
