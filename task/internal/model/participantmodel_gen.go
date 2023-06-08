@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
@@ -28,6 +29,12 @@ type (
 		Update(ctx context.Context, data *Participant) error
 		Delete(ctx context.Context, id int64) error
 		FinParticipantList(ctx context.Context,tashkId uint64) ([]*Participant, error)
+		FindParticipantAmount(ctx context.Context, status int64,genre string) (int64, error)
+		FindParticipantList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*Participant, error)
+		GetListIndividualParticipating(ctx context.Context, userId string,maxNum,startLine int64) ([]*int64, error)
+		UpdateParticipant(ctx context.Context, userId string,taskId uint64) error
+		FindTaskParticipant(ctx context.Context, userId string,taskId int64) ([]*Participant, error)
+		FindListParticipants(ctx context.Context, userId string,taskId int64) (*Participant, error)
 	}
 
 	defaultParticipantModel struct {
@@ -95,7 +102,7 @@ func (m *defaultParticipantModel) tableName() string {
 
 // FinParticipantList 获取任务列表
 func (m *defaultParticipantModel) FinParticipantList(ctx context.Context, tashkId uint64) ([]*Participant, error) {
-	query := fmt.Sprintf("select %s from %s where `task_id` = ?", participantRows, m.table)
+	query := fmt.Sprintf( "select %s from %s where `task_id` = ?", participantRows, m.table)
 	var resp []*Participant
 	err := m.conn.QueryRow(&resp, query, tashkId)
 	switch err {
@@ -109,7 +116,7 @@ func (m *defaultParticipantModel) FinParticipantList(ctx context.Context, tashkI
 }
 
 // FinParticipantAmount 获取任务数量
-func (m *defaultParticipantModel) FinParticipantAmount(ctx context.Context, status int,genre string) (int64, error) {
+func (m *defaultParticipantModel) FindParticipantAmount(ctx context.Context, status int64,genre string) (int64, error) {
 	query := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE `%s` = ?", m.table,genre)
 	var resp int64
 	err := m.conn.QueryRow(&resp, query, status)
@@ -124,10 +131,59 @@ func (m *defaultParticipantModel) FinParticipantAmount(ctx context.Context, stat
 }
 
 // FindTaskList 按条件查询策展任务
-func (m *defaultParticipantModel) FindTaskList(ctx context.Context, tashkId,maxNum,startLine int32,genre string) ([]*PublishTask, error) {
-	query := fmt.Sprintf("select %s from %s where `%s` = ? limit %s offset %s", participantRows, m.table, genre, maxNum, startLine)
-	var resp []*PublishTask
+func (m *defaultParticipantModel) FindParticipantList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*Participant, error) {
+	query := fmt.Sprintf("select %s from %s where `%s` = ? ORDER BY id DESC limit %s offset %s", participantRows, m.table, genre, maxNum, startLine)
+	var resp []*Participant
 	err := m.conn.QueryRow(&resp, query, tashkId)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+// GetListIndividualParticipating 获取个人参与任务ID列表
+func (m *defaultParticipantModel) GetListIndividualParticipating(ctx context.Context, userId string,maxNum,startLine int64) ([]*int64, error) {
+	query := fmt.Sprintf( "select %s from %s where `user_id` = ? ORDER BY id DESC limit %s offset %s", "task_id", m.table,maxNum,startLine)
+	var resp []*int64
+	err := m.conn.QueryRow(&resp, query, userId)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+func (m *defaultParticipantModel) UpdateParticipant(ctx context.Context, userId string,taskId uint64) error {
+	query := fmt.Sprintf("update %s set `status` = 0 %s where `user_id` = ? and `task_id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, userId,taskId)
+	return err
+}
+
+// FindTaskParticipant 任务参与者
+func (m *defaultParticipantModel) FindTaskParticipant(ctx context.Context, userId string,taskId int64) ([]*Participant, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `task_id` = ? AND `created_at` like ? ORDER BY id DESC", participantRows, m.table)
+	var resp []*Participant
+	err := m.conn.QueryRow(&resp, query, userId,taskId,time.Now().Format("2006-01-02")+"%")
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+// FindTaskParticipant 任务参与者
+func (m *defaultParticipantModel) FindListParticipants(ctx context.Context, userId string,taskId int64) (*Participant, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `task_id` = ? ORDER BY id DESC", participantRows, m.table)
+	var resp *Participant
+	err := m.conn.QueryRow(&resp, query, userId,taskId)
 	switch err {
 	case nil:
 		return resp, nil

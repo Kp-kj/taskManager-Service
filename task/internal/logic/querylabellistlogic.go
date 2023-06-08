@@ -2,8 +2,9 @@ package logic
 
 import (
 	"context"
-	"task/internal/svc"
-	"task/task"
+
+	"taskManager-Service-main/task/internal/svc"
+	"taskManager-Service-main/task/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -22,8 +23,7 @@ func NewQueryLabelListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Qu
 	}
 }
 
-// QueryLabelList 获取标签列表
-func (l *QueryLabelListLogic) QueryLabelList(in *task.LabelListInput) (*task.ReLabelList, error) {
+func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task.ReLabelList, error) {
 	_, err := l.svcCtx.LabelModel.FindList(l.ctx, in.UserId)
 	if err != nil {
 		return nil, err

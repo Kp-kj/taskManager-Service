@@ -28,6 +28,7 @@ type (
 		Update(ctx context.Context, data *TreasureStages) error
 		Delete(ctx context.Context, id int64) error
 		FindSpecificTask(ctx context.Context,userId string,taskId uint,taskName int) (*TreasureStages, error)
+		FindPersonalMissionCompletionDetails(ctx context.Context, userId string,taskId int64) ([]*TreasureStages, error)
 	}
 
 	defaultTreasureStagesModel struct {
@@ -103,4 +104,20 @@ func (m *defaultTreasureStagesModel) Update(ctx context.Context, data *TreasureS
 
 func (m *defaultTreasureStagesModel) tableName() string {
 	return m.table
+}
+
+
+// FindPersonalMissionCompletionDetails 获取个人任务完成详情
+func (m *defaultTreasureStagesModel) FindPersonalMissionCompletionDetails(ctx context.Context, userId string,taskId int64) ([]*TreasureStages, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `task_id` = ?", treasureStagesRows, m.table)
+	var resp []*TreasureStages
+	err := m.conn.QueryRow(&resp, query, userId,taskId)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }

@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-
-	"task/internal/config"
-	"task/internal/server"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service-main/task/internal/config"
+	"taskManager-Service-main/task/internal/logic"
+	"taskManager-Service-main/task/internal/server"
+	"taskManager-Service-main/task/internal/svc"
+	"taskManager-Service-main/task/task"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -33,6 +33,8 @@ func main() {
 		}
 	})
 	defer s.Stop()
+	// 创建子任务样式
+	logic.CreateSubtaskStyle()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()

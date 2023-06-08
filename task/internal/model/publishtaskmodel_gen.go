@@ -29,7 +29,10 @@ type (
 		Update(ctx context.Context, data *PublishTask) error
 		Delete(ctx context.Context, id int64) error
 		FindPublishTaskAmount(ctx context.Context, status int,genre string) (int64, error)
-		FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int32,genre string) ([]*PublishTask, error)
+		FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*PublishTask, error)
+		FindTaskInformationBasedID(ctx context.Context, tashkId []*int64) ([]*PublishTask, error)
+		UpdateNumberCompleters(ctx context.Context, data uint64) error
+		FindTaskCount(ctx context.Context, userId string) (int64, error)
 	}
 
 	defaultPublishTaskModel struct {
@@ -113,7 +116,7 @@ func (m *defaultPublishTaskModel) FindPublishTaskAmount(ctx context.Context, sta
 }
 
 // FindTaskList 按条件查询策展任务
-func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int32,genre string) ([]*PublishTask, error) {
+func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*PublishTask, error) {
 	query := fmt.Sprintf("select %s from %s where `%s` = ? limit %s offset %s", publishTaskRows, m.table, genre, maxNum, startLine)
 	var resp []*PublishTask
 	err := m.conn.QueryRow(&resp, query, tashkId)
@@ -125,4 +128,39 @@ func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashk
 	default:
 		return nil, err
 	}
+}
+
+// 根据ID获取任务信息
+func (m *defaultPublishTaskModel) FindTaskInformationBasedID(ctx context.Context, tashkId []*int64) ([]*PublishTask, error) {
+	query := fmt.Sprintf("select %s from %s where `task_id` in ?", publishTaskRows, m.table)
+	var resp []*PublishTask
+	err := m.conn.QueryRow(&resp, query, tashkId)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+// FindTaskCount 查询今日是否发布策展任务数量
+func (m *defaultPublishTaskModel) FindTaskCount(ctx context.Context, userId string) (int64, error) {
+	query := fmt.Sprintf("select COUNT(*) from %s where `creator` = ? AND `created_at` like ?", m.table)
+	var resp int64
+	err := m.conn.QueryRow(&resp, query, userId,time.Now().Format("2006-01-02")+"%")
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return 0, ErrNotFound
+	default:
+		return 0, err
+	}
+}
+func (m *defaultPublishTaskModel) UpdateNumberCompleters(ctx context.Context, data uint64) error {
+	query := fmt.Sprintf("update %s set `accomplish` = accomplish + 1 where `id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query,data)
+	return err
 }

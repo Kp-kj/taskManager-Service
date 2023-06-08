@@ -27,6 +27,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*AssociatedSubtask, error)
 		Update(ctx context.Context, data *AssociatedSubtask) error
 		Delete(ctx context.Context, id int64) error
+		FindAssociatedSubtask(ctx context.Context, id int64,genre string) ([]*AssociatedSubtask, error)
+		FindSubtaskInformation(ctx context.Context,subtaskName string,treasureId int64) (*AssociatedSubtask, error)
 	}
 
 	defaultAssociatedSubtaskModel struct {
@@ -72,6 +74,34 @@ func (m *defaultAssociatedSubtaskModel) FindOne(ctx context.Context, id int64) (
 	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", associatedSubtaskRows, m.table)
 	var resp AssociatedSubtask
 	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+// FindAssociatedSubtask 查询是否存在已关联子任务
+func (m *defaultAssociatedSubtaskModel) FindAssociatedSubtask(ctx context.Context, id int64,genre string) ([]*AssociatedSubtask, error) {
+	query := fmt.Sprintf("select %s from %s where %s = ?", associatedSubtaskRows, m.table,genre)
+	var resp []*AssociatedSubtask
+	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+// 获取相应的子任务信息
+func (m *defaultAssociatedSubtaskModel) FindSubtaskInformation(ctx context.Context,subtaskName string,treasureId int64) (*AssociatedSubtask, error) {
+	query := fmt.Sprintf("select %s from %s where `task_name` = ? AND `treasure_id` = ? limit 1", associatedSubtaskRows, m.table)
+	var resp AssociatedSubtask
+	err := m.conn.QueryRowCtx(ctx, &resp, query, subtaskName,treasureId)
 	switch err {
 	case nil:
 		return &resp, nil

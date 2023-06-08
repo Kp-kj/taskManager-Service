@@ -27,6 +27,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*TreasureTaskStage, error)
 		Update(ctx context.Context, data *TreasureTaskStage) error
 		Delete(ctx context.Context, id int64) error
+		UpdateTreasureTaskStage(ctx context.Context, treasure, treasureSequence, stageExperience, stageReward int64) error
+		FindTreasureInformation(ctx context.Context, id int64,genre string) ([]*TreasureTaskStage, error)
 	}
 
 	defaultTreasureTaskStageModel struct {
@@ -81,6 +83,28 @@ func (m *defaultTreasureTaskStageModel) Update(ctx context.Context, data *Treasu
 	_, err := m.conn.ExecCtx(ctx, query, data.Treasure, data.TreasureSequence, data.StageExperience, data.StageReward, data.Id)
 	return err
 }
+
+// 编辑宝箱样式
+func (m *defaultTreasureTaskStageModel) UpdateTreasureTaskStage(ctx context.Context,treasure,treasureSequence int64,stageExperience,stageReward int64) error {
+	query := fmt.Sprintf("update %s set `stage_experience` = ?,`stage_reward` = ? where `treasure` = ? AND `treasure_sequence` = ?", m.table, treasureTaskStageRowsWithPlaceHolder)
+	_, err := m.conn.ExecCtx(ctx, query,stageExperience,stageReward,treasure,treasureSequence)
+	return err
+}
+
+func (m *defaultTreasureTaskStageModel) FindTreasureInformation(ctx context.Context, id int64,genre string) ([]*TreasureTaskStage, error) {
+	query := fmt.Sprintf("select %s from %s where `%s` = ?", treasureTaskStageRows, m.table,genre)
+	var resp []*TreasureTaskStage
+	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
 
 func (m *defaultTreasureTaskStageModel) tableName() string {
 	return m.table

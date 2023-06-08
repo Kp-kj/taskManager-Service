@@ -5,10 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"task/internal/model"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service-main/task/internal/model"
 	"time"
+
+	"taskManager-Service-main/task/internal/svc"
+	"taskManager-Service-main/task/task"
 
 	"github.com/shopspring/decimal"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -67,6 +68,11 @@ func (l *CreateCuratorialTaskLogic) CreateCuratorialTask(in *task.CreatePublishT
 	if err != nil {
 		return mistake, err
 	}
+	// 每日任务—校验发布策展任务
+	exist, err := verifyPublishCuration(l, in.Creator, "发布策展任务")
+	if err != nil || !exist {
+		return mistake, err
+	}
 	return &task.Mistake{}, nil
 }
 
@@ -108,15 +114,15 @@ func CreateTaskInformation(l *CreateCuratorialTaskLogic, in *task.CreatePublishT
 	// 添加任务类型
 	for _, item := range in.TaskBak {
 		taskDemand := &model.TaskDemand{
-			TaskId:     sql.NullInt64{Int64: int64(item.TaskId), Valid: true},
-			TaskName:   sql.NullInt64{Int64: int64(item.TaskName), Valid: true},
-			TaskDemand: sql.NullString{String: item.TaskDemand, Valid: true},
-			Article:    sql.NullString{String: item.Article, Valid: true},
+			TaskId:     sql.NullInt64{Int64: int64(item.TaskId)},
+			TaskName:   sql.NullInt64{Int64: int64(item.TaskName)},
+			TaskDemand: sql.NullString{String: item.TaskDemand},
+			Article:    sql.NullString{String: item.Article},
 		}
 		result1, err := l.svcCtx.TaskDemandModel.Insert(l.ctx, taskDemand)
 		if err != nil {
 			return &task.Mistake{Err: fmt.Sprintf("%v", result1)}, err
 		}
 	}
-	return &task.Mistake{}, nil
+	return nil, nil
 }

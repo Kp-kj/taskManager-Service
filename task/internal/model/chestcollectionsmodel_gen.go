@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
@@ -27,6 +28,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*ChestCollections, error)
 		Update(ctx context.Context, data *ChestCollections) error
 		Delete(ctx context.Context, id int64) error
+		FindIndividualAllowance(ctx context.Context, userID string) (*ChestCollections, error)
+		UpdateIndividualAllowance(ctx context.Context,userID string, amount int64) error
 	}
 
 	defaultChestCollectionsModel struct {
@@ -80,6 +83,27 @@ func (m *defaultChestCollectionsModel) Insert(ctx context.Context, data *ChestCo
 func (m *defaultChestCollectionsModel) Update(ctx context.Context, data *ChestCollections) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, chestCollectionsRowsWithPlaceHolder)
 	_, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.ChestAmount, data.Id)
+	return err
+}
+
+// FindIndividualAllowance 查询个人宝箱领取度
+func (m *defaultChestCollectionsModel) FindIndividualAllowance(ctx context.Context, userID string) (*ChestCollections, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `created_at` like ?", chestCollectionsRows, m.table)
+	var resp ChestCollections
+	err := m.conn.QueryRowCtx(ctx, &resp, query, userID, time.Now().Format("2006-01-02")+"%")
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+// UpdateIndividualAllowance 更新个人宝箱领取数
+func (m *defaultChestCollectionsModel) UpdateIndividualAllowance(ctx context.Context,userID string, amount int64) error {
+	query := fmt.Sprintf("update %s set `chest_amount` = chest_amount + ? where `user_id` = ?", m.table, chestCollectionsRowsWithPlaceHolder)
+	_, err := m.conn.ExecCtx(ctx, query, amount, userID)
 	return err
 }
 

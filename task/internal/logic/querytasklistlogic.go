@@ -3,9 +3,10 @@ package logic
 import (
 	"context"
 	"fmt"
-	"task/internal/model"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service-main/task/internal/model"
+
+	"taskManager-Service-main/task/internal/svc"
+	"taskManager-Service-main/task/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,6 @@ func NewQueryTaskListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Que
 	}
 }
 
-// QueryTaskList 查询策展任务列表
 func (l *QueryTaskListLogic) QueryTaskList(in *task.PublishTaskInput) (*task.RePublishTask, error) {
 	// 获取数据总量
 	totalAmount, err := l.svcCtx.PublishTaskModel.FindPublishTaskAmount(l.ctx, int(in.Status), "status")
@@ -67,7 +67,7 @@ func (l *QueryTaskListLogic) QueryTaskList(in *task.PublishTaskInput) (*task.ReP
 // @return          int64   总页数
 // @return          int64   偏移量
 // @return          error   错误信息
-func MathPagination(total int64, maxNum *int32, currPage *int32) (startLine int32, err error) {
+func MathPagination(total int64, maxNum *int64, currPage *int64) (startLine int64, err error) {
 	// 捕获异常
 	defer func() {
 		if errs := recover(); errs != nil {
