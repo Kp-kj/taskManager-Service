@@ -11,16 +11,8 @@ message CreatePublishTaskInput {
   double awardBudget = 4; // 奖励预算
   sint64 maxUser = 5; // 最大奖励用户数
   double awardAmount = 6; // 奖励金额
-  repeated taskBak taskBak = 7;// 任务要求
+  repeated taskDemand taskBak = 7;// 任务要求
 }
-
-message taskBak{
-  uint64 taskId = 1; // 任务ID
-  int32  taskName = 2; // 任务名称,1-转推，2-引用，3-回复,4-喜欢,5-关注
-  string taskDemand = 3; // 任务要求
-  string article = 4; // 任务文案
-}
-
 
 message Mistake {
   string err = 1;
@@ -63,9 +55,9 @@ message taskDemand{
 
 // 查询策展任务输入
 message PublishTaskInput {
-  int32 status = 1; // 筛选，0-已结束，1-进行中
-  int32 currPage = 2; // 当前页面
-  int32 maxNum =3; // 最大输出数
+  int64 status = 1; // 筛选，0-已结束，1-进行中
+  int64 currPage = 2; // 当前页面
+  int64 maxNum =3; // 最大输出数
 }
 
 // 任务详情
@@ -84,6 +76,7 @@ message TaskDemandBak {
   string article = 4;  // 任务文案
   int32 done = 5;     // 是否完成，1-已完成，0-未完成
 }
+
 message ParticipantBak {
   string userId = 1;  // 用户ID
   string userName = 2;   // 用户账户
@@ -99,8 +92,8 @@ message ParticipantBak {
 // 分页数据格式
 message PaginationData {
   int64 total = 1; // 数据总量
-  int32 page = 2; // 当前页码
-  int32 per_page = 3;// 约束的最大数据量
+  int64 page = 2; // 当前页码
+  int64 per_page = 3;// 约束的最大数据量
 }
 
 // 查询任务详情入参
@@ -111,10 +104,10 @@ message TaskDetailsInput {
 
 // 查询个人发起任务列表+参与任务入参
 message UserLaunchTaskListInput {
-  string userId = 1; //  用户ID
-  int32 currPage = 2; //  当前页面
-  int32 maxNum = 3; // 最大输出数
-  int32 status = 4; // 查询状态，1-个人发起任务列表，2-个人参与任务列表
+  string userId = 1; // 用户ID
+  int64 currPage = 2; // 当前页面
+  int64 maxNum = 3; // 最大输出数
+  int64 status = 4; // 查询状态，1-个人发起任务列表，2-个人参与任务列表
 }
 
 // 创建标签入参
@@ -123,14 +116,19 @@ message CreateLabelInput {
   string label = 2; // 标签信息
 }
 
-// 删除标签入参
-message DeleteLabelInput {
+// TaskID入参
+message TaskIDInquireInput {
   uint64 id = 1; // 标签ID
 }
 
-// 获取标签列表入参
-message LabelListInput {
+// UserID入参
+message UserIDInquireInput {
   string userId = 1; // 用戶ID
+}
+
+
+message ReLabelListOut {
+  repeated ReLabelList reLabelList =1;
 }
 
 // 获取标签列表出参
@@ -140,14 +138,179 @@ message ReLabelList {
   string content = 3; // 内容
 }
 
-service Task {
+// 判断是否完成策展任务进参
+message PerformTaskInput{
+  uint64 taskId = 1;// 任务ID
+  string userId = 2;//  用户ID
+}
 
+// 创建宝箱样式+编辑宝箱样式进参
+message TreasureTaskSrtInput {
+  uint64 id = 1; // ID
+  string name = 2; // 任务名称
+  int64 demandIntegral = 3; // 任务需求积分
+  int64 taskReward = 4; // 任务奖励（用于校验子任务总奖励）
+  int64 experienceReward = 5; // 经验奖励（用于校验阶段总奖励）
+  int64 rewardQuantity = 6; // 奖励个数（宝箱个数）
+  repeated TreasureTaskStage treasureTaskStage = 7;// 宝箱阶段
+}
+// 宝箱阶段
+message TreasureTaskStage {
+  int64 iD = 1;
+  int64 treasure = 2;  // 宝箱ID
+  int64 treasureSequence = 3;  // 宝箱阶段序号
+  int64 stageExperience = 4;  // 阶段经验
+  int64 stageReward = 5;  // 阶段奖励
+}
+
+// 上架+删除宝箱样式
+message TreasureTaskInput{
+  uint64 id = 1; // 宝箱样式ID
+  int32 status = 2; // 更新状态，0-删除，1-上架
+}
+
+// 宝箱样式返回结构体
+message ReTreasureTaskSrt{
+  PaginationData paginationData = 1; // 分页数据
+  repeated TreasureTaskSrtInput TreasureTaskSrtInput =2; // 宝箱样式返回结构体
+}
+
+// 子样式列表返回数据
+message ReSubtaskStyle{
+  repeated SubtaskStyle SubtaskStyle = 1;
+}
+// 子样式返回结构体
+message SubtaskStyle {
+  int64 taskId = 1; // 任务ID
+  string taskName = 2; // 任务名称（中）
+  string taskNameEng = 3; // 任务名称(英)
+  string taskDetails = 4; // 任务详情描述(中)
+  string taskDetailsEng = 5; // 任务详情描述(英)
+  int64 taskStatus = 6; // 任务类型，0-站内，1-站外
+}
+
+// AssociatedSubtaskSrt 关联子任务
+message AssociatedSubtaskSrt  {
+  uint64 taskId = 1; // 子任务ID
+  uint64 treasureId = 2; // 宝箱ID
+  string taskName = 3;  // 子任务名称（中）
+  string taskNameEng = 4; // 子任务名称(英)
+  string taskDetails = 5; // 子任务详情描述（中）
+  string taskDetailsEng = 6; // 子任务详情描述(英)
+  int64 taskStatus = 7; // 任务状态，0-站内，1-站外
+  int64 reward = 8; // 奖励
+  int64 experience = 9; // 经验
+  int64 number = 10; // 需求数量
+  string article = 11; // 站外文案
+  string link = 12; // 跳转链接
+  string label = 13; // 标签
+}
+// 关联子任务返回列表
+message ReAssociatedSubtask {
+  repeated AssociatedSubtask associatedSubtask =1;
+}
+// AssociatedSubtask 关联子任务
+message AssociatedSubtask {
+  uint64 taskId = 1; // 任务ID
+  string taskName = 2; // 任务名称（中）
+  string taskNameEng = 3; // 任务名称(英)
+  string taskDetails = 4; // 任务详情描述（中）
+  string taskDetailsEng = 5; // 任务详情描述(英)
+  int64 taskStatus = 6; // 任务类型，0-站内，1-站外
+  int64 reward  = 7; // 奖励
+  int64 experience  = 8; // 经验
+  int64 number = 9; // 需求数量
+  string article = 10; // 站外文案
+  string link = 11; // 调转链接
+  string label = 12; // 标签
+  uint64 treasureId = 13; // 宝箱ID
+}
+
+// 创建宝箱领取度+更新宝箱领取进度入参
+message AmendChestCollectionInput{
+  string userId = 1; // 用户ID
+  int64 amount = 2; // 积分数量
+}
+
+// ReChestCollectionSrt 宝箱进度返回数据
+message ReChestCollectionSrt {
+  string serId = 1; // 用户ID
+  int64 demandIntegral = 2; // 宝箱需要总经验
+  int64 chestAmount = 3; // 宝箱领取经验值
+  int64 rewardQuantity = 4; // 奖励个数（宝箱个数）
+  repeated TreasureTaskStageSeed treasureTaskStage = 5; // 宝箱阶段
+  repeated AssociatedSubtaskSeed associatedSubtask = 6; // 关联子任务
+}
+
+// TreasureTaskStageSrt 宝箱阶段子样式
+message TreasureTaskStageSeed{
+  int64 treasure = 1; // 宝箱ID
+  int64 treasureSequence = 2; // 宝箱阶段序号
+  int64 stageExperience = 3; // 阶段经验
+  double treasureRatio = 4; // 宝箱比例
+  int64 stageReward = 5; // 阶段奖励
+}
+
+// AssociatedSubtask 关联子任务子样式
+message AssociatedSubtaskSeed{
+  int64 treasureId = 1; // 宝箱ID
+  int64 taskId = 2; // 任务ID
+  string taskName = 3; // 任务名称（中）
+  string taskNameEng = 4; // 任务名称(英)
+  string taskDetails = 5; // 任务详情描述（中）
+  string taskDetailsEng = 6; // 任务详情描述(英)
+  int64 taskStatus = 7; // 任务状态，0-站内，2-站外
+  int64 reward = 8; // 奖励
+  int64 experience = 9; // 经验
+  int64 number = 10; // 需求数量
+  string article = 11; // 站外文案
+  string Link = 12; // 调转链接
+  string Label = 13; // 标签
+  int64 complete = 14; // 任务完成度，数量
+}
+
+// CreateUserPowerTask 创建用户助力信息
+message CreateUserPowerTaskInput{
+  string publishesUserId = 1; // 发布用户ID
+  string helperUserId = 2; // 助力用户ID
+}
+
+//  TreasureTaskListInput 查询+搜索宝箱样式列表入参
+message TreasureTaskListInput{
+  string name = 1; // 宝箱名称
+  int64 reward = 2; // 奖励数量
+  int64 currPage = 3; // 当前页面
+  int64 maxNum = 4; // 最大输出数
+}
+
+message VoluntarilyTaskScheduleInput{
+  string userId = 1; // 用户UUID
+  int64 taskId = 2; // 任务ID
+  int64 genre = 3; // 任务类型，1-喜欢，2-关注
+}
+
+service Task {
+  // 策展任务相关
   rpc CreateCuratorialTask(CreatePublishTaskInput) returns(Mistake); // 创建策展任务
   rpc QueryTaskList(PublishTaskInput) returns(RePublishTask); // 查询策展任务列表
   rpc QueryTaskDetails(TaskDetailsInput) returns(ReTaskDetails); // 查询任务详情
   rpc QueryUserLaunchTaskList(UserLaunchTaskListInput) returns(RePublishTask); // 查询个人发起任务列表+参与任务
   rpc CreateLabel(CreateLabelInput) returns(Mistake); // 创建标签
-  rpc DeleteLabel(DeleteLabelInput) returns(Mistake); // 删除标签
-  rpc QueryLabelList(LabelListInput) returns(ReLabelList); // 获取标签列表
+  rpc DeleteLabel(TaskIDInquireInput) returns(Mistake); // 删除标签
+  rpc QueryLabelList(UserIDInquireInput) returns(ReLabelList); // 获取标签列表
+  rpc PerformTask(PerformTaskInput) returns(Mistake); // 判断是否完成策展任务(未完)
+  rpc VoluntarilyTaskSchedule(VoluntarilyTaskScheduleInput) returns(Mistake); // 完成站内策展任务(喜欢+关注)(未完成)
 
+  // 每日任务
+  rpc AmendTreasureTask(TreasureTaskSrtInput) returns(Mistake); // 创建宝箱样式+编辑宝箱样式
+  rpc ChangeTreasureTask(TreasureTaskInput) returns(Mistake); // 上架+删除宝箱样式
+  rpc QueryTreasureTaskList(TreasureTaskListInput) returns(ReTreasureTaskSrt); // 查询+搜索宝箱样式列表
+  rpc QuerySubtaskStyle(TaskIDInquireInput) returns(ReSubtaskStyle); // 查询子任务样式列表
+  rpc AmendAssociatedSubtask(AssociatedSubtaskSrt) returns(Mistake); // 创建关联子任务+编辑关联子任务
+  rpc DeleteAssociatedSubtask(TaskIDInquireInput) returns(Mistake); // 删除管理子任务
+  rpc QueryAssociatedSubtask(TaskIDInquireInput) returns(ReAssociatedSubtask); // 查询关联子任务
+  rpc AmendChestCollection(AmendChestCollectionInput) returns(Mistake); // 创建宝箱领取度+更新宝箱领取进度
+  rpc QueryChestCollection(UserIDInquireInput) returns(ReChestCollectionSrt); // 获取用户宝箱进度
+  rpc CreateUserPowerTask(CreateUserPowerTaskInput) returns(Mistake); // 创建用户助力信息
+  rpc CreateSubtaskStyle(UserIDInquireInput) returns(Mistake); // 创建子任务样式
 }

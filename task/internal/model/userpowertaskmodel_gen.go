@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
@@ -27,6 +28,7 @@ type (
 		FindOne(ctx context.Context, id int64) (*UserPowerTask, error)
 		Update(ctx context.Context, data *UserPowerTask) error
 		Delete(ctx context.Context, id int64) error
+		FindNumberHelpings(ctx context.Context, userId string) (int64, error)
 	}
 
 	defaultUserPowerTaskModel struct {
@@ -68,6 +70,20 @@ func (m *defaultUserPowerTaskModel) FindOne(ctx context.Context, id int64) (*Use
 		return nil, ErrNotFound
 	default:
 		return nil, err
+	}
+}
+// FindNumberHelpings 获取用户帮助助力次数
+func (m *defaultUserPowerTaskModel) FindNumberHelpings(ctx context.Context, userId string) (int64, error) {
+	query := fmt.Sprintf("select COUNT(*) from %s where `helper_user_id` = ? AND `created_at` like ? ", m.table)
+	var resp int64
+	err := m.conn.QueryRowCtx(ctx, &resp, query, userId, time.Now().Format("2006-01-02")+"%")
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return 0, ErrNotFound
+	default:
+		return 0, err
 	}
 }
 

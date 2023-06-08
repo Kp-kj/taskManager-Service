@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service-main/task/internal/svc"
+	"taskManager-Service-main/task/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +23,7 @@ func NewDeleteLabelLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 	}
 }
 
-// DeleteLabel 删除标签
-func (l *DeleteLabelLogic) DeleteLabel(in *task.DeleteLabelInput) (*task.Mistake, error) {
+func (l *DeleteLabelLogic) DeleteLabel(in *task.TaskIDInquireInput) (*task.Mistake, error) {
 	// 删除标签
 	err := l.svcCtx.LabelModel.Delete(l.ctx, int64(in.Id))
 	if err != nil {

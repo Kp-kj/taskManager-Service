@@ -25,8 +25,9 @@ type (
 	dailyTaskModel interface {
 		Insert(ctx context.Context, data *DailyTask) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*DailyTask, error)
-		Update(ctx context.Context, data *DailyTask) error
+		Update(ctx context.Context,userId string,taskId int64, complete ,experience int64) error
 		Delete(ctx context.Context, id int64) error
+		FindCompletionTask(ctx context.Context, userId string,taskId int64) (*DailyTask, error)
 	}
 
 	defaultDailyTaskModel struct {
@@ -73,15 +74,30 @@ func (m *defaultDailyTaskModel) FindOne(ctx context.Context, id int64) (*DailyTa
 	}
 }
 
+// 获取日常任务完成信息
+func (m *defaultDailyTaskModel) FindCompletionTask(ctx context.Context, userId string,taskId int64) (*DailyTask, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `task_id` = ?", dailyTaskRows, m.table)
+	var resp DailyTask
+	err := m.conn.QueryRowCtx(ctx, &resp, query, userId,taskId)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
 func (m *defaultDailyTaskModel) Insert(ctx context.Context, data *DailyTask) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, dailyTaskRowsExpectAutoSet)
 	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.TaskId, data.Complete, data.Experience)
 	return ret, err
 }
 
-func (m *defaultDailyTaskModel) Update(ctx context.Context, data *DailyTask) error {
-	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, dailyTaskRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.TaskId, data.Complete, data.Experience, data.Id)
+func (m *defaultDailyTaskModel) Update(ctx context.Context,userId string,taskId int64, complete ,experience int64) error {
+	query := fmt.Sprintf("update %s set `complete` = ?,`experience` = ? where `userId` = ? AND `taskId` = ? ", m.table)
+	_, err := m.conn.ExecCtx(ctx, query,complete,experience,userId,taskId,)
 	return err
 }
 

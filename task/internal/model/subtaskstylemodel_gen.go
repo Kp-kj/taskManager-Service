@@ -27,6 +27,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*SubtaskStyle, error)
 		Update(ctx context.Context, data *SubtaskStyle) error
 		Delete(ctx context.Context, id int64) error
+		FindSubtaskStyleList(ctx context.Context) ([]*SubtaskStyle, error)
+		FindSubtaskStyles(ctx context.Context, id int64) ([]*SubtaskStyle, error)
 	}
 
 	defaultSubtaskStyleModel struct {
@@ -62,12 +64,40 @@ func (m *defaultSubtaskStyleModel) Delete(ctx context.Context, id int64) error {
 }
 
 func (m *defaultSubtaskStyleModel) FindOne(ctx context.Context, id int64) (*SubtaskStyle, error) {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", subtaskStyleRows, m.table)
-	var resp SubtaskStyle
+	query := fmt.Sprintf("select %s from %s where `id` l= ? limit 1", subtaskStyleRows, m.table)
+	var resp *SubtaskStyle
 	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
 	switch err {
 	case nil:
-		return &resp, nil
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+// 搜索子任务样式列表
+func (m *defaultSubtaskStyleModel) FindSubtaskStyles(ctx context.Context, id int64) ([]*SubtaskStyle, error) {
+	query := fmt.Sprintf("select %s from %s where `task_id` = ?", subtaskStyleRows, m.table)
+	var resp []*SubtaskStyle
+	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultSubtaskStyleModel) FindSubtaskStyleList(ctx context.Context) ([]*SubtaskStyle, error) {
+	query := fmt.Sprintf("select %s from %s order by id desc", subtaskStyleRows, m.table)
+	var resp []*SubtaskStyle
+	err := m.conn.QueryRowCtx(ctx, &resp, query)
+	switch err {
+	case nil:
+		return resp, nil
 	case sqlc.ErrNotFound:
 		return nil, ErrNotFound
 	default:

@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
@@ -27,6 +28,7 @@ type (
 		FindOne(ctx context.Context, id int64) (*UserPublishesHelperTask, error)
 		Update(ctx context.Context, data *UserPublishesHelperTask) error
 		Delete(ctx context.Context, id int64) error
+		FindUserPublishesHelperTask(ctx context.Context, userId string) (*UserPublishesHelperTask, error)
 	}
 
 	defaultUserPublishesHelperTaskModel struct {
@@ -85,6 +87,20 @@ func (m *defaultUserPublishesHelperTaskModel) Update(ctx context.Context, data *
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userPublishesHelperTaskRowsWithPlaceHolder)
 	_, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.UserName, data.Avatar, data.Article, data.Link, data.Label, data.Id)
 	return err
+}
+// FindUserPublishesHelperTask 查询用户发布助力信息
+func (m *defaultUserPublishesHelperTaskModel) FindUserPublishesHelperTask(ctx context.Context, userId string) (*UserPublishesHelperTask, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `created_at` like ?", userPublishesHelperTaskRows, m.table)
+	var resp UserPublishesHelperTask
+	err := m.conn.QueryRowCtx(ctx, &resp, query, userId, time.Now().Format("2006-01-02")+"%")
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
 
 func (m *defaultUserPublishesHelperTaskModel) tableName() string {

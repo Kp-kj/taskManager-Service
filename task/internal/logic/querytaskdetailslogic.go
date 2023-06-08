@@ -2,9 +2,10 @@ package logic
 
 import (
 	"context"
-	"task/internal/model"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service-main/task/internal/model"
+
+	"taskManager-Service-main/task/internal/svc"
+	"taskManager-Service-main/task/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,7 +24,6 @@ func NewQueryTaskDetailsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-// QueryTaskDetails 查询任务详情
 func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*task.ReTaskDetails, error) {
 	// 查询策展任务详情
 	publishTask, err := l.svcCtx.PublishTaskModel.FindOne(l.ctx, int64(in.TaskId))
