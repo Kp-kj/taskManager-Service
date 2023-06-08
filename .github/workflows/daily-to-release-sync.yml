@@ -1,0 +1,21 @@
+name: Sync Develop to Release
+
+on:
+  schedule:
+    - cron: "0 20 * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Sync Branches
+        run: |
+          git checkout develop
+          git pull origin develop
+          git checkout release
+          git merge develop
+          git push origin release
