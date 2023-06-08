@@ -15,7 +15,6 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-// 测试增加
 var configFile = flag.String("f", "etc/task.yaml", "the config file")
 
 func main() {
