@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"taskManager-Service-main/task/internal/model"
 
@@ -31,15 +30,15 @@ func (l *CreateLabelLogic) CreateLabel(in *task.CreateLabelInput) (*task.Mistake
 	// 获取现有标签数量
 	amount, err := l.svcCtx.LabelModel.FindLabelAmount(l.ctx, in.UserId)
 	if err != nil {
-		return &task.Mistake{Err: fmt.Sprint(err)}, err
+		return &task.Mistake{Msg: "数据未查询到"}, err
 	}
 	// 判断标签数量
 	if amount > 20 {
-		return &task.Mistake{Err: fmt.Sprint("标签数量大于20条")}, nil
+		return &task.Mistake{Msg: "标签数量大于20条"}, nil
 	}
 	// 判断标签字数
 	if in.Label == "" || strings.Count(in.Label, "") >= 10 {
-		return &task.Mistake{Err: fmt.Sprint("标签字数不合规")}, nil
+		return &task.Mistake{Msg: "标签字数不合规"}, nil
 	}
 	// 创建标签
 	label := &model.Label{
@@ -50,5 +49,5 @@ func (l *CreateLabelLogic) CreateLabel(in *task.CreateLabelInput) (*task.Mistake
 	if err != nil {
 		return &task.Mistake{}, err
 	}
-	return &task.Mistake{}, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }

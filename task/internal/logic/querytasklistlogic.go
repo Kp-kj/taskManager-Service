@@ -25,25 +25,30 @@ func NewQueryTaskListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Que
 	}
 }
 
+// QueryTaskList 查询策展任务列表
 func (l *QueryTaskListLogic) QueryTaskList(in *task.PublishTaskInput) (*task.RePublishTask, error) {
 	// 获取数据总量
 	totalAmount, err := l.svcCtx.PublishTaskModel.FindPublishTaskAmount(l.ctx, int(in.Status), "status")
 	if err != nil {
+		fmt.Printf("1err:%v\n", err)
 		return nil, err
 	}
 	// 计算分页
 	startLine, err := MathPagination(totalAmount, &in.MaxNum, &in.CurrPage)
 	if err != nil {
+		fmt.Printf("2err:%v\n", err)
 		return nil, err
 	}
 	// 查询数据
 	taskList, err := l.svcCtx.PublishTaskModel.FindPublishTaskList(l.ctx, in.Status, in.MaxNum, startLine, "status")
 	if err != nil {
+		fmt.Printf("3err:%v\n", err)
 		return nil, err
 	}
 	// 查询任务要求
 	rePublishTaskBak, err := QueryTaskRequiresAndAssignsValue(l, taskList)
 	if err != nil {
+		fmt.Printf("4err:%v\n", err)
 		return nil, err
 	}
 	// 赋值分页
@@ -72,7 +77,7 @@ func MathPagination(total int64, maxNum *int64, currPage *int64) (startLine int6
 	defer func() {
 		if errs := recover(); errs != nil {
 			err = fmt.Errorf("分页计算发生错误：%s", errs)
-			fmt.Printf(err.Error())
+			fmt.Print(err.Error())
 		}
 	}()
 	// 限制每页最大数据量

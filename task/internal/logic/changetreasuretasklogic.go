@@ -26,24 +26,25 @@ func NewChangeTreasureTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // ChangeTreasureTask 上架+删除宝箱样式
 // @param id     uint 宝箱样式ID
-// @param status int  更新状态，0-删除，1-上架
+// @param status int  更新状态，1-删除，0-上架
 func (l *ChangeTreasureTaskLogic) ChangeTreasureTask(in *task.TreasureTaskInput) (*task.Mistake, error) {
 	// 判断是上架还是删除
 	switch in.Status {
 	case 0:
 		err := GroundingTreasureTask(l, in)
 		if err != nil {
-			return &task.Mistake{Err: err.Error()}, err
+
+			return &task.Mistake{Msg: fmt.Sprintf("删除宝箱样式失败:%v", err)}, err
 		}
 	case 1:
 		err := DeleteTreasureTask(l, in)
 		if err != nil {
-			return &task.Mistake{Err: err.Error()}, err
+			return &task.Mistake{Msg: err.Error()}, err
 		}
 	default:
 		return nil, fmt.Errorf("更新类型不合规")
 	}
-	return &task.Mistake{}, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }
 
 // GroundingTreasureTask 上架宝箱样式
@@ -79,6 +80,7 @@ func GroundingTreasureTask(l *ChangeTreasureTaskLogic, in *task.TreasureTaskInpu
 // DeleteTreasureTask 删除宝箱样式
 func DeleteTreasureTask(l *ChangeTreasureTaskLogic, in *task.TreasureTaskInput) error {
 	treasureTask, err := l.svcCtx.TreasureTaskModel.FindOne(l.ctx, int64(in.Id))
+	fmt.Printf("删除宝箱样式:%v", err)
 	if err != nil {
 		return err
 	}
@@ -87,6 +89,7 @@ func DeleteTreasureTask(l *ChangeTreasureTaskLogic, in *task.TreasureTaskInput) 
 		return fmt.Errorf("上架任务不允许删除")
 	}
 	err = l.svcCtx.TreasureTaskModel.Delete(l.ctx, int64(in.Id))
+	fmt.Printf("删除宝箱样式111111111111111111111:%v\n", err)
 	if err != nil {
 		return err
 	}

@@ -29,5 +29,5 @@ func (l *DeleteAssociatedSubtaskLogic) DeleteAssociatedSubtask(in *task.TaskIDIn
 	if err != nil {
 		return nil, err
 	}
-	return &task.Mistake{}, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"taskManager-Service-main/task/internal/model"
+	"time"
 
 	"taskManager-Service-main/task/internal/svc"
 	"taskManager-Service-main/task/task"
@@ -35,21 +36,37 @@ func (l *VoluntarilyTaskScheduleLogic) VoluntarilyTaskSchedule(in *task.Voluntar
 	var demand int
 	switch in.Genre {
 	case 1:
-		// 调用第三方，实现推特喜欢
 		demand = 4
+		// 判断任务是否存关注和追随
+		taskDemand, err := l.svcCtx.TaskDemandModel.FindTaskDemand(l.ctx, in.TaskId, fmt.Sprint(demand))
+		if err != nil {
+			return &task.Mistake{Msg: err.Error()}, nil
+		}
+		if len(taskDemand) == 0 {
+			return &task.Mistake{Msg: "任务不存在"}, nil
+		}
+		// 调用第三方，实现推特喜欢
 	case 2:
-		// 调用第三方，实现推特关注
 		demand = 5
+		// 判断任务是否存关注和追随
+		taskDemand, err := l.svcCtx.TaskDemandModel.FindTaskDemand(l.ctx, in.TaskId, fmt.Sprint(demand))
+		if err != nil {
+			return &task.Mistake{Msg: err.Error()}, nil
+		}
+		if len(taskDemand) == 0 {
+			return &task.Mistake{Msg: "任务不存在"}, nil
+		}
+		// 调用第三方，实现推特关注
 	default:
-		return nil, fmt.Errorf("任务类型不合规")
+		return &task.Mistake{Msg: "任务类型不合规"}, nil
 	}
 	// 更新参与者列表
 	err := UpdateParticipant(l, in.TaskId, in.UserId, demand)
 	if err != nil {
-		return nil, err
+		return &task.Mistake{Msg: err.Error()}, err
 	}
 
-	return nil, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }
 
 // UpdateParticipant 更新参与者列表
@@ -59,17 +76,22 @@ func (l *VoluntarilyTaskScheduleLogic) VoluntarilyTaskSchedule(in *task.Voluntar
 func UpdateParticipant(l *VoluntarilyTaskScheduleLogic, taskId int64, userId string, demand int) error {
 	// 判断此任务参与者是否存在
 	participant, err := l.svcCtx.ParticipantModel.FindListParticipants(l.ctx, userId, taskId)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return err
 	}
 	// 判断参与用户列表是否存在
-	if participant.Id > 0 {
+	if participant != nil {
 		// 创建参与者任务要求度
 		err := CreateTreasureStage(l, taskId, userId, demand)
 		if err != nil {
 			return err
 		}
 	} else {
+		// 获取策展任务表
+		taskInformation, err := l.svcCtx.PublishTaskModel.FindOne(l.ctx, taskId)
+		if err != nil {
+			return err
+		}
 		// 查询用户ID的信息（用户表未完成）
 		userInfo, err := QueryUser(userId)
 		if err != nil {
@@ -77,11 +99,12 @@ func UpdateParticipant(l *VoluntarilyTaskScheduleLogic, taskId int64, userId str
 		}
 		// 创建数据
 		participantCre := model.Participant{
+			CreatedAt:   sql.NullTime{Time: time.Now(), Valid: true},
 			UserId:      userId,
-			UserName:    userInfo,                         // 未完
-			NickName:    sql.NullString{String: userInfo}, // 未完
-			Avatar:      sql.NullString{String: userInfo}, // 未完
-			AwardAmount: participant.AwardAmount,
+			UserName:    userInfo,                                      // 未完
+			NickName:    sql.NullString{String: userInfo, Valid: true}, // 未完
+			Avatar:      sql.NullString{String: userInfo, Valid: true}, // 未完
+			AwardAmount: taskInformation.AwardAmount,
 			TaskId:      taskId,
 			Status:      1,
 		}
@@ -101,10 +124,11 @@ func UpdateParticipant(l *VoluntarilyTaskScheduleLogic, taskId int64, userId str
 // CreateTreasureStage 创建参与者任务要求完成度
 func CreateTreasureStage(l *VoluntarilyTaskScheduleLogic, taskId int64, userId string, taskName int) error {
 	treasureStage := model.TreasureStages{
+		CreatedAt:  sql.NullTime{Time: time.Now(), Valid: true},
 		UserId:     userId,
 		TaskId:     taskId,
-		TaskName:   sql.NullInt64{Int64: int64(taskName)},
-		TaskStatus: sql.NullInt64{Int64: 0},
+		TaskName:   sql.NullInt64{Int64: int64(taskName), Valid: true},
+		TaskStatus: sql.NullInt64{Int64: 0, Valid: true},
 	}
 	_, err := l.svcCtx.TreasureStagesModel.Insert(l.ctx, &treasureStage)
 	if err != nil {

@@ -52,7 +52,7 @@ type TaskClient interface {
 	QueryUserLaunchTaskList(ctx context.Context, in *UserLaunchTaskListInput, opts ...grpc.CallOption) (*RePublishTask, error)
 	CreateLabel(ctx context.Context, in *CreateLabelInput, opts ...grpc.CallOption) (*Mistake, error)
 	DeleteLabel(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
-	QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelList, error)
+	QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelListOut, error)
 	PerformTask(ctx context.Context, in *PerformTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 	VoluntarilyTaskSchedule(ctx context.Context, in *VoluntarilyTaskScheduleInput, opts ...grpc.CallOption) (*Mistake, error)
 	// 每日任务
@@ -131,8 +131,8 @@ func (c *taskClient) DeleteLabel(ctx context.Context, in *TaskIDInquireInput, op
 	return out, nil
 }
 
-func (c *taskClient) QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelList, error) {
-	out := new(ReLabelList)
+func (c *taskClient) QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelListOut, error) {
+	out := new(ReLabelListOut)
 	err := c.cc.Invoke(ctx, Task_QueryLabelList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -268,7 +268,7 @@ type TaskServer interface {
 	QueryUserLaunchTaskList(context.Context, *UserLaunchTaskListInput) (*RePublishTask, error)
 	CreateLabel(context.Context, *CreateLabelInput) (*Mistake, error)
 	DeleteLabel(context.Context, *TaskIDInquireInput) (*Mistake, error)
-	QueryLabelList(context.Context, *UserIDInquireInput) (*ReLabelList, error)
+	QueryLabelList(context.Context, *UserIDInquireInput) (*ReLabelListOut, error)
 	PerformTask(context.Context, *PerformTaskInput) (*Mistake, error)
 	VoluntarilyTaskSchedule(context.Context, *VoluntarilyTaskScheduleInput) (*Mistake, error)
 	// 每日任务
@@ -308,7 +308,7 @@ func (UnimplementedTaskServer) CreateLabel(context.Context, *CreateLabelInput) (
 func (UnimplementedTaskServer) DeleteLabel(context.Context, *TaskIDInquireInput) (*Mistake, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteLabel not implemented")
 }
-func (UnimplementedTaskServer) QueryLabelList(context.Context, *UserIDInquireInput) (*ReLabelList, error) {
+func (UnimplementedTaskServer) QueryLabelList(context.Context, *UserIDInquireInput) (*ReLabelListOut, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryLabelList not implemented")
 }
 func (UnimplementedTaskServer) PerformTask(context.Context, *PerformTaskInput) (*Mistake, error) {

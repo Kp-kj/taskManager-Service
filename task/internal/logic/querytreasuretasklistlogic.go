@@ -67,8 +67,13 @@ func ConditionalSearch(l *QueryTreasureTaskListLogic, in *task.TreasureTaskListI
 		if err != nil {
 			return nil, 0, err
 		}
+		// 计算分页
+		startLine, err := MathPagination(total, &in.MaxNum, &in.CurrPage)
+		if err != nil {
+			return nil, total, err
+		}
 		// 获取数量
-		treasureTask, err = l.svcCtx.TreasureTaskModel.FindNameAndQuantity(l.ctx, in.Reward, in.Name, in.CurrPage, in.MaxNum)
+		treasureTask, err = l.svcCtx.TreasureTaskModel.FindNameAndQuantity(l.ctx, in.Reward, in.Name, startLine, in.MaxNum)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -80,8 +85,13 @@ func ConditionalSearch(l *QueryTreasureTaskListLogic, in *task.TreasureTaskListI
 		if err != nil {
 			return nil, 0, err
 		}
+		// 计算分页
+		startLine, err := MathPagination(total, &in.MaxNum, &in.CurrPage)
+		if err != nil {
+			return nil, total, err
+		}
 		// 查看全部a
-		treasureTask, err = l.svcCtx.TreasureTaskModel.FindAll(l.ctx, in.CurrPage, in.MaxNum)
+		treasureTask, err = l.svcCtx.TreasureTaskModel.FindAll(l.ctx, startLine, in.MaxNum)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -93,8 +103,13 @@ func ConditionalSearch(l *QueryTreasureTaskListLogic, in *task.TreasureTaskListI
 		if err != nil {
 			return nil, 0, err
 		}
+		// 计算分页
+		startLine, err := MathPagination(total, &in.MaxNum, &in.CurrPage)
+		if err != nil {
+			return nil, total, err
+		}
 		// 按名称搜索
-		treasureTask, err = l.svcCtx.TreasureTaskModel.FindName(l.ctx, in.Name, in.CurrPage, in.MaxNum)
+		treasureTask, err = l.svcCtx.TreasureTaskModel.FindName(l.ctx, in.Name, startLine, in.MaxNum)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -106,8 +121,13 @@ func ConditionalSearch(l *QueryTreasureTaskListLogic, in *task.TreasureTaskListI
 		if err != nil {
 			return nil, 0, err
 		}
+		// 计算分页
+		startLine, err := MathPagination(total, &in.MaxNum, &in.CurrPage)
+		if err != nil {
+			return nil, total, err
+		}
 		// 按奖励个数搜索
-		treasureTask, err = l.svcCtx.TreasureTaskModel.FindQuantity(l.ctx, in.Reward, in.CurrPage, in.MaxNum)
+		treasureTask, err = l.svcCtx.TreasureTaskModel.FindQuantity(l.ctx, in.Reward, startLine, in.MaxNum)
 		if err != nil {
 			return nil, 0, err
 		}

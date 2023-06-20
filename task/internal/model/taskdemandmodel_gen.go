@@ -28,6 +28,8 @@ type (
 		Update(ctx context.Context, data *TaskDemand) error
 		Delete(ctx context.Context, id int64) error
 		FindList(ctx context.Context,id int64) ([]*TaskDemand, error)
+
+		FindTaskDemand(ctx context.Context, taskId int64,taskName string) ([]*TaskDemand, error)
 	}
 
 	defaultTaskDemandModel struct {
@@ -77,7 +79,7 @@ func (m *defaultTaskDemandModel) FindOne(ctx context.Context, id int64) (*TaskDe
 func (m *defaultTaskDemandModel) FindList(ctx context.Context, id int64) ([]*TaskDemand, error) {
 	query := fmt.Sprintf("select %s from %s where `task_id` = ? ", taskDemandRows, m.table)
 	var resp []*TaskDemand
-	err := m.conn.QueryRow(&resp, query, id)
+	err := m.conn.QueryRows(&resp, query, id)
 	switch err {
 	case nil:
 		return resp, nil
@@ -98,6 +100,21 @@ func (m *defaultTaskDemandModel) Update(ctx context.Context, data *TaskDemand) e
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, taskDemandRowsWithPlaceHolder)
 	_, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.TaskId, data.TaskName, data.TaskDemand, data.Article, data.Id)
 	return err
+}
+
+// FindList 查询任务要求
+func (m *defaultTaskDemandModel) FindTaskDemand(ctx context.Context, taskId int64,taskName string) ([]*TaskDemand, error) {
+	query := fmt.Sprintf("select %s from %s where `task_id` = ? AND `task_name` = ?", taskDemandRows, m.table)
+	var resp []*TaskDemand
+	err := m.conn.QueryRows(&resp, query, taskId,taskName)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
 
 func (m *defaultTaskDemandModel) tableName() string {

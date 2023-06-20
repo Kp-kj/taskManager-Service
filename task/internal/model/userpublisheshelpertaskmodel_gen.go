@@ -88,6 +88,7 @@ func (m *defaultUserPublishesHelperTaskModel) Update(ctx context.Context, data *
 	_, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.UserName, data.Avatar, data.Article, data.Link, data.Label, data.Id)
 	return err
 }
+
 // FindUserPublishesHelperTask 查询用户发布助力信息
 func (m *defaultUserPublishesHelperTaskModel) FindUserPublishesHelperTask(ctx context.Context, userId string) (*UserPublishesHelperTask, error) {
 	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `created_at` like ?", userPublishesHelperTaskRows, m.table)

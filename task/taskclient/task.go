@@ -20,6 +20,7 @@ type (
 	CreateLabelInput             = task.CreateLabelInput
 	CreatePublishTaskInput       = task.CreatePublishTaskInput
 	CreateUserPowerTaskInput     = task.CreateUserPowerTaskInput
+	DetermineWhetherTaskComplete = task.DetermineWhetherTaskComplete
 	Mistake                      = task.Mistake
 	PaginationData               = task.PaginationData
 	ParticipantBak               = task.ParticipantBak
@@ -56,7 +57,7 @@ type (
 		QueryUserLaunchTaskList(ctx context.Context, in *UserLaunchTaskListInput, opts ...grpc.CallOption) (*RePublishTask, error)
 		CreateLabel(ctx context.Context, in *CreateLabelInput, opts ...grpc.CallOption) (*Mistake, error)
 		DeleteLabel(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
-		QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelList, error)
+		QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelListOut, error)
 		PerformTask(ctx context.Context, in *PerformTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 		VoluntarilyTaskSchedule(ctx context.Context, in *VoluntarilyTaskScheduleInput, opts ...grpc.CallOption) (*Mistake, error)
 		// 每日任务
@@ -115,7 +116,7 @@ func (m *defaultTask) DeleteLabel(ctx context.Context, in *TaskIDInquireInput, o
 	return client.DeleteLabel(ctx, in, opts...)
 }
 
-func (m *defaultTask) QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelList, error) {
+func (m *defaultTask) QueryLabelList(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReLabelListOut, error) {
 	client := task.NewTaskClient(m.cli.Conn())
 	return client.QueryLabelList(ctx, in, opts...)
 }

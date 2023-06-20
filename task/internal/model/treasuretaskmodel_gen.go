@@ -38,6 +38,7 @@ type (
 		FindNameCount(ctx context.Context,name string) (int64, error)
 		FindQuantity(ctx context.Context,reward int64,currPage, maxNum int64) ([]*TreasureTask, error)
 		FindQuantityCount(ctx context.Context,reward int64) (int64, error)
+		FindNewlyAddedData(ctx context.Context,treasureTask TreasureTask) (*TreasureTask, error)
 
 	}
 
@@ -88,14 +89,16 @@ func (m *defaultTreasureTaskModel) FindOne(ctx context.Context, id int64) (*Trea
 }
 
 func (m *defaultTreasureTaskModel) Insert(ctx context.Context, data *TreasureTask) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, treasureTaskRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.Name, data.DemandIntegral, data.TaskReward, data.ExperienceReward, data.RewardQuantity, data.Employ)
+	treasure:= fmt.Sprintf("created_at","name","demand_integral","task_reward","experience_reward","reward_quantity")
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, treasure)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.Name, data.DemandIntegral, data.TaskReward, data.ExperienceReward, data.RewardQuantity)
 	return ret, err
 }
 
 func (m *defaultTreasureTaskModel) Update(ctx context.Context, data *TreasureTask) error {
-	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, treasureTaskRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.Name, data.DemandIntegral, data.TaskReward, data.ExperienceReward, data.RewardQuantity, data.Id)
+	treasureTaskRowsWithPlace :=fmt.Sprintf("name = '%s', demand_integral = %v, task_reward = %v, experience_reward = %v, reward_quantity = %v", data.Name, data.DemandIntegral, data.TaskReward, data.ExperienceReward, data.RewardQuantity)
+	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, treasureTaskRowsWithPlace)
+	_, err := m.conn.ExecCtx(ctx, query, data.Id)
 	return err
 }
 
@@ -129,10 +132,10 @@ func (m *defaultTreasureTaskModel) FindTreasureQuantity(ctx context.Context) (*T
 }
 
 // 名称+奖励个数搜索
-func (m *defaultTreasureTaskModel) FindNameAndQuantity(ctx context.Context,reward int64,name string,currPage, maxNum int64) ([]*TreasureTask, error) {
-	query := fmt.Sprintf("select %s from %s where `reward_quantity` = ? AND `name` like ? limit %s offset %s order by id desc", treasureTaskRows, m.table,currPage,maxNum)
+func (m *defaultTreasureTaskModel) FindNameAndQuantity(ctx context.Context,reward int64,name string,startLine, maxNum int64) ([]*TreasureTask, error) {
+	query := fmt.Sprintf("select %s from %s where `reward_quantity` = ? AND `name` like ? ORDER BY id DESC limit %d offset %d", treasureTaskRows, m.table, maxNum, startLine)
 	var resp []*TreasureTask
-	err := m.conn.QueryRowCtx(ctx, &resp, query,reward, "%"+name+"%")
+	err := m.conn.QueryRowsCtx(ctx, &resp, query,reward, "%"+name+"%")
 	switch err {
 	case nil:
 		return resp, nil
@@ -158,10 +161,10 @@ func (m *defaultTreasureTaskModel) FindNameAndQuantityCount(ctx context.Context,
 }
 
 // FindAll 查看全部
-func (m *defaultTreasureTaskModel) FindAll(ctx context.Context,currPage, maxNum int64) ([]*TreasureTask, error) {
-	query := fmt.Sprintf("select %s from %s limit %s offset %s order by id desc", treasureTaskRows, m.table,currPage,maxNum)
+func (m *defaultTreasureTaskModel) FindAll(ctx context.Context,startLine, maxNum int64) ([]*TreasureTask, error) {
+	query := fmt.Sprintf("select %s from %s ORDER BY id DESC limit %d offset %d", treasureTaskRows, m.table,maxNum, startLine)
 	var resp []*TreasureTask
-	err := m.conn.QueryRowCtx(ctx, &resp, query)
+	err := m.conn.QueryRowsCtx(ctx, &resp, query)
 	switch err {
 	case nil:
 		return resp, nil
@@ -187,10 +190,10 @@ func (m *defaultTreasureTaskModel) FindAllCount(ctx context.Context) (int64, err
 }
 
 // FindName 按名称查询
-func (m *defaultTreasureTaskModel) FindName(ctx context.Context,name string,currPage, maxNum int64) ([]*TreasureTask, error) {
-	query := fmt.Sprintf("select %s from %s where `name` like ? limit %s offset %s order by id desc", treasureTaskRows, m.table,currPage,maxNum)
+func (m *defaultTreasureTaskModel) FindName(ctx context.Context,name string,startLine, maxNum int64) ([]*TreasureTask, error) {
+	query := fmt.Sprintf("select %s from %s where `name` like ? ORDER BY id DESC limit %d offset %d", treasureTaskRows, m.table, maxNum, startLine)
 	var resp []*TreasureTask
-	err := m.conn.QueryRowCtx(ctx, &resp, query,"%"+name+"%")
+	err := m.conn.QueryRowsCtx(ctx, &resp, query,"%"+name+"%")
 	switch err {
 	case nil:
 		return resp, nil
@@ -216,10 +219,10 @@ func (m *defaultTreasureTaskModel) FindNameCount(ctx context.Context,name string
 }
 
 // FindQuantity 按奖励个数搜索
-func (m *defaultTreasureTaskModel) FindQuantity(ctx context.Context,reward int64,currPage, maxNum int64) ([]*TreasureTask, error) {
-	query := fmt.Sprintf("select %s from %s where `reward_quantity` = ? limit %s offset %s order by id desc", treasureTaskRows, m.table,currPage,maxNum)
+func (m *defaultTreasureTaskModel) FindQuantity(ctx context.Context,reward int64,startLine, maxNum int64) ([]*TreasureTask, error) {
+	query := fmt.Sprintf("select %s from %s where `reward_quantity` = ? ORDER BY id DESC limit %d offset %d", treasureTaskRows, m.table, maxNum, startLine)
 	var resp []*TreasureTask
-	err := m.conn.QueryRowCtx(ctx, &resp, query,reward)
+	err := m.conn.QueryRowsCtx(ctx, &resp, query,reward)
 	switch err {
 	case nil:
 		return resp, nil
@@ -243,6 +246,22 @@ func (m *defaultTreasureTaskModel) FindQuantityCount(ctx context.Context,reward 
 		return 0, err
 	}
 }
+// 查询刚刚添加的数据
+func (m *defaultTreasureTaskModel) FindNewlyAddedData(ctx context.Context,treasureTask TreasureTask) (*TreasureTask, error) {
+	query := fmt.Sprintf("select %s from %s where `name` = ? AND `demand_integral` = ? AND `task_reward` = ? AND `experience_reward` = ? AND `reward_quantity` = ? order by id DESC limit 1", treasureTaskRows, m.table)
+	var resp TreasureTask
+	err := m.conn.QueryRowCtx(ctx, &resp, query, treasureTask.Name, treasureTask.DemandIntegral, treasureTask.TaskReward, treasureTask.ExperienceReward, treasureTask.RewardQuantity)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+
 func (m *defaultTreasureTaskModel) tableName() string {
 	return m.table
 }

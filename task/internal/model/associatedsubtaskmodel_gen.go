@@ -87,7 +87,7 @@ func (m *defaultAssociatedSubtaskModel) FindOne(ctx context.Context, id int64) (
 func (m *defaultAssociatedSubtaskModel) FindAssociatedSubtask(ctx context.Context, id int64,genre string) ([]*AssociatedSubtask, error) {
 	query := fmt.Sprintf("select %s from %s where %s = ?", associatedSubtaskRows, m.table,genre)
 	var resp []*AssociatedSubtask
-	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, id)
 	switch err {
 	case nil:
 		return resp, nil

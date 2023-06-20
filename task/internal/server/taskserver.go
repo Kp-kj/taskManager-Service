@@ -53,7 +53,7 @@ func (s *TaskServer) DeleteLabel(ctx context.Context, in *task.TaskIDInquireInpu
 	return l.DeleteLabel(in)
 }
 
-func (s *TaskServer) QueryLabelList(ctx context.Context, in *task.UserIDInquireInput) (*task.ReLabelList, error) {
+func (s *TaskServer) QueryLabelList(ctx context.Context, in *task.UserIDInquireInput) (*task.ReLabelListOut, error) {
 	l := logic.NewQueryLabelListLogic(ctx, s.svcCtx)
 	return l.QueryLabelList(in)
 }

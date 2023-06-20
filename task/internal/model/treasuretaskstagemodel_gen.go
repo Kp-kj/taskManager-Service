@@ -86,7 +86,7 @@ func (m *defaultTreasureTaskStageModel) Update(ctx context.Context, data *Treasu
 
 // 编辑宝箱样式
 func (m *defaultTreasureTaskStageModel) UpdateTreasureTaskStage(ctx context.Context,treasure,treasureSequence int64,stageExperience,stageReward int64) error {
-	query := fmt.Sprintf("update %s set `stage_experience` = ?,`stage_reward` = ? where `treasure` = ? AND `treasure_sequence` = ?", m.table, treasureTaskStageRowsWithPlaceHolder)
+	query := fmt.Sprintf("update %s set `stage_experience` = ?,`stage_reward` = ? where `treasure` = ? AND `treasure_sequence` = ?", m.table)
 	_, err := m.conn.ExecCtx(ctx, query,stageExperience,stageReward,treasure,treasureSequence)
 	return err
 }
@@ -94,7 +94,7 @@ func (m *defaultTreasureTaskStageModel) UpdateTreasureTaskStage(ctx context.Cont
 func (m *defaultTreasureTaskStageModel) FindTreasureInformation(ctx context.Context, id int64,genre string) ([]*TreasureTaskStage, error) {
 	query := fmt.Sprintf("select %s from %s where `%s` = ?", treasureTaskStageRows, m.table,genre)
 	var resp []*TreasureTaskStage
-	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, id)
 	switch err {
 	case nil:
 		return resp, nil

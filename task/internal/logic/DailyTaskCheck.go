@@ -226,8 +226,8 @@ func amendDailyTask(l *CreateCuratorialTaskLogic, userId string, associatedSubta
 		dailyTaskSrt := &model.DailyTask{
 			UserId:     userId,
 			TaskId:     associatedSubtask.Id,
-			Complete:   sql.NullInt64{Int64: 100 / associatedSubtask.Number.Int64},
-			Experience: sql.NullInt64{Int64: associatedSubtask.Experience.Int64 / associatedSubtask.Number.Int64},
+			Complete:   sql.NullInt64{Int64: 100 / associatedSubtask.Number.Int64, Valid: true},
+			Experience: sql.NullInt64{Int64: associatedSubtask.Experience.Int64 / associatedSubtask.Number.Int64, Valid: true},
 		}
 		_, err = l.svcCtx.DailyTaskModel.Insert(l.ctx, dailyTaskSrt)
 		if err != nil {
