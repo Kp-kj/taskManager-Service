@@ -27,7 +27,7 @@ func (l *DeleteLabelLogic) DeleteLabel(in *task.TaskIDInquireInput) (*task.Mista
 	// 删除标签
 	err := l.svcCtx.LabelModel.Delete(l.ctx, int64(in.Id))
 	if err != nil {
-		return nil, err
+		return &task.Mistake{Msg: err.Error()}, err
 	}
-	return &task.Mistake{}, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }

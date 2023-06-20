@@ -25,14 +25,18 @@ func NewQueryUserLaunchTaskListLogic(ctx context.Context, svcCtx *svc.ServiceCon
 	}
 }
 
+// QueryUserLaunchTaskList 查询个人发起任务列表+参与任务
 func (l *QueryUserLaunchTaskListLogic) QueryUserLaunchTaskList(in *task.UserLaunchTaskListInput) (*task.RePublishTask, error) {
 	// 获取任务列表
 	publishTaskList, totalAmount, err := GetTheTaskList(l, in)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
 	// 获取任务要求
 	userTaskList, err := ObtainTaskRequirements(l, publishTaskList)
+	if err != nil && err.Error() != "sql: no rows in result set" {
+		return nil, err
+	}
 	// 赋值分页数据
 	PaginationData := task.PaginationData{
 		Total:   totalAmount,
@@ -57,23 +61,24 @@ func GetTheTaskList(l *QueryUserLaunchTaskListLogic, in *task.UserLaunchTaskList
 		// 查询个人发起任务列表
 		// 获取数据总量
 		totalAmount, err = l.svcCtx.PublishTaskModel.FindPublishTaskAmount(l.ctx, int(in.Status), "creator")
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
 		// 计算分页
 		startLine, err := MathPagination(totalAmount, &in.MaxNum, &in.CurrPage)
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
 		// 查询个人发起任务列表
 		publishTaskList, err = l.svcCtx.PublishTaskModel.FindPublishTaskList(l.ctx, in.Status, in.MaxNum, startLine, "creator")
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
 	case 2:
 		// 查询个人参与任务
 		// 查询参与列表数量
-		totalAmount, err = l.svcCtx.ParticipantModel.FindParticipantAmount(l.ctx, in.Status, "creator")
+
+		totalAmount, err = l.svcCtx.ParticipantModel.FindParticipantAmount(l.ctx, in.Status, "user_id")
 		if err != nil {
 			return nil, totalAmount, err
 		}
@@ -83,13 +88,23 @@ func GetTheTaskList(l *QueryUserLaunchTaskListLogic, in *task.UserLaunchTaskList
 			return nil, totalAmount, err
 		}
 		// 获取任务ID
-		participatingId, err := l.svcCtx.ParticipantModel.GetListIndividualParticipating(l.ctx, in.UserId, in.MaxNum, startLine)
-		if err != nil {
+		participatingIdSrt, err := l.svcCtx.ParticipantModel.GetListIndividualParticipating(l.ctx, in.UserId, in.MaxNum, startLine)
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
+		var participatingId string
+		for _, item := range participatingIdSrt {
+			if participatingId == "" {
+				participatingId = fmt.Sprintf("'%v'%v", item.Id, participatingId)
+			} else {
+				participatingId = fmt.Sprintf("'%v',%v", item.Id, participatingId)
+			}
+
+		}
+		participatingId = fmt.Sprintf("(%v)", participatingId)
 		// 根据ID获取任务信息
 		publishTaskList, err = l.svcCtx.PublishTaskModel.FindTaskInformationBasedID(l.ctx, participatingId)
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
 	default:

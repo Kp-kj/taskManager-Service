@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 
 	"taskManager-Service-main/task/internal/svc"
 	"taskManager-Service-main/task/task"
@@ -23,10 +24,24 @@ func NewQueryLabelListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Qu
 	}
 }
 
-func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task.ReLabelList, error) {
-	_, err := l.svcCtx.LabelModel.FindList(l.ctx, in.UserId)
+// QueryLabelList 获取标签列表
+func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task.ReLabelListOut, error) {
+	reLabelList, err := l.svcCtx.LabelModel.FindList(l.ctx, in.UserId)
 	if err != nil {
 		return nil, err
 	}
-	return &task.ReLabelList{}, nil
+	var reLabel []*task.ReLabelList
+	for _, item := range reLabelList {
+		reLabelListSrt := task.ReLabelList{
+			Id:      uint64(item.Id),
+			Creator: item.Creator,
+			Content: item.Content,
+		}
+		reLabel = append(reLabel, &reLabelListSrt)
+	}
+	reLabelSrt := &task.ReLabelListOut{
+		ReLabelListOut: reLabel,
+	}
+	fmt.Printf("vxxxxx:%v\n", reLabelSrt)
+	return reLabelSrt, nil
 }

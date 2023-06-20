@@ -30,9 +30,10 @@ type (
 		Delete(ctx context.Context, id int64) error
 		FindPublishTaskAmount(ctx context.Context, status int,genre string) (int64, error)
 		FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*PublishTask, error)
-		FindTaskInformationBasedID(ctx context.Context, tashkId []*int64) ([]*PublishTask, error)
+		FindTaskInformationBasedID(ctx context.Context, tashkId string) ([]*PublishTask, error)
 		UpdateNumberCompleters(ctx context.Context, data uint64) error
 		FindTaskCount(ctx context.Context, userId string) (int64, error)
+		FindNewlyAddedData(ctx context.Context, creator,tweetAddress,label string) (*PublishTask, error)
 	}
 
 	defaultPublishTaskModel struct {
@@ -85,8 +86,9 @@ func (m *defaultPublishTaskModel) FindOne(ctx context.Context, id int64) (*Publi
 }
 
 func (m *defaultPublishTaskModel) Insert(ctx context.Context, data *PublishTask) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, publishTaskRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.Creator, data.Status, data.TweetAddress, data.Label, data.AwardBudget, data.MaxUser, data.AwardAmount, data.EndTime, data.Accomplish)
+	publish:= "`created_at`, `creator`, `status`, `tweet_address`, `label`, `award_budget`, `max_user`, `award_amount`, `end_time`, `accomplish`"
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, publish)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.Creator, data.Status, data.TweetAddress, data.Label, data.AwardBudget, data.MaxUser, data.AwardAmount, data.EndTime, data.Accomplish)
 	return ret, err
 }
 
@@ -117,9 +119,9 @@ func (m *defaultPublishTaskModel) FindPublishTaskAmount(ctx context.Context, sta
 
 // FindTaskList 按条件查询策展任务
 func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*PublishTask, error) {
-	query := fmt.Sprintf("select %s from %s where `%s` = ? limit %s offset %s", publishTaskRows, m.table, genre, maxNum, startLine)
+	query := fmt.Sprintf("select %s from %s where `%s` = ? limit %d offset %d", publishTaskRows, m.table, genre, maxNum, startLine)
 	var resp []*PublishTask
-	err := m.conn.QueryRow(&resp, query, tashkId)
+	err := m.conn.QueryRows(&resp, query, tashkId)
 	switch err {
 	case nil:
 		return resp, nil
@@ -131,10 +133,10 @@ func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashk
 }
 
 // 根据ID获取任务信息
-func (m *defaultPublishTaskModel) FindTaskInformationBasedID(ctx context.Context, tashkId []*int64) ([]*PublishTask, error) {
-	query := fmt.Sprintf("select %s from %s where `task_id` in ?", publishTaskRows, m.table)
+func (m *defaultPublishTaskModel) FindTaskInformationBasedID(ctx context.Context, info string) ([]*PublishTask, error) {
+	query := fmt.Sprintf("select %s from %s where `id` in %v", publishTaskRows, m.table, info)
 	var resp []*PublishTask
-	err := m.conn.QueryRow(&resp, query, tashkId)
+	err := m.conn.QueryRows(&resp, query)
 	switch err {
 	case nil:
 		return resp, nil
@@ -163,4 +165,18 @@ func (m *defaultPublishTaskModel) UpdateNumberCompleters(ctx context.Context, da
 	query := fmt.Sprintf("update %s set `accomplish` = accomplish + 1 where `id` = ?", m.table)
 	_, err := m.conn.ExecCtx(ctx, query,data)
 	return err
+}
+// 查询刚刚添加的数据
+func (m *defaultPublishTaskModel) FindNewlyAddedData(ctx context.Context, creator,tweetAddress,label string) (*PublishTask, error) {
+	query := fmt.Sprintf("select %s from %s where `creator` = ? AND `tweet_address` = ? AND `label` = ? order by id DESC limit 1", publishTaskRows, m.table)
+	var resp PublishTask
+	err := m.conn.QueryRowCtx(ctx, &resp, query, creator,tweetAddress,label)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }

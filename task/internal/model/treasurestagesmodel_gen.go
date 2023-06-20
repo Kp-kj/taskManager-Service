@@ -91,8 +91,9 @@ func (m *defaultTreasureStagesModel) FindSpecificTask(ctx context.Context, userI
 }
 
 func (m *defaultTreasureStagesModel) Insert(ctx context.Context, data *TreasureStages) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, treasureStagesRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.TaskId, data.TaskName, data.TaskStatus)
+	treasureStages := fmt.Sprintf("created_at, user_id, task_id, task_name,task_status")
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, treasureStages)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.UserId, data.TaskId, data.TaskName, data.TaskStatus)
 	return ret, err
 }
 

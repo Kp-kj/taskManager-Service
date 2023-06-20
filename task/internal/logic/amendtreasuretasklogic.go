@@ -30,10 +30,10 @@ func NewAmendTreasureTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *AmendTreasureTaskLogic) AmendTreasureTask(in *task.TreasureTaskSrtInput) (*task.Mistake, error) {
 	// 宝箱数据校验
 	if in.Name == "" || strings.Count(in.Name, "") >= 21 {
-		return &task.Mistake{Err: "任务名称长度不合规"}, fmt.Errorf("任务名称长度不合规")
+		return &task.Mistake{Msg: "任务名称长度不合规"}, fmt.Errorf("任务名称长度不合规")
 	}
 	if int(in.RewardQuantity) != len(in.TreasureTaskStage) {
-		return &task.Mistake{Err: "宝箱阶段奖励数量不合规"}, fmt.Errorf("宝箱阶段奖励数量不合规")
+		return &task.Mistake{Msg: "宝箱阶段奖励数量不合规"}, fmt.Errorf("宝箱阶段奖励数量不合规")
 	}
 	// 赋值宝箱样式
 	treasureTaskSrt := model.TreasureTask{
@@ -49,15 +49,16 @@ func (l *AmendTreasureTaskLogic) AmendTreasureTask(in *task.TreasureTaskSrtInput
 		// 编辑
 		err := EditTheChestStyle(l, in, treasureTaskSrt)
 		if err != nil {
-			return nil, err
+			return &task.Mistake{Msg: err.Error()}, err
 		}
 	} else {
+		// 创建
 		err := CreateTheChestStyle(l, in, treasureTaskSrt)
 		if err != nil {
-			return nil, err
+			return &task.Mistake{Msg: err.Error()}, err
 		}
 	}
-	return &task.Mistake{}, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }
 
 // EditTheChestStyle 编辑宝箱样式
@@ -84,11 +85,12 @@ func CreateTheChestStyle(l *AmendTreasureTaskLogic, in *task.TreasureTaskSrtInpu
 	if err != nil {
 		return err
 	}
+	// 获取刚刚添加的数据（后期改为UUID,未完）
+	treasureTask, _ := l.svcCtx.TreasureTaskModel.FindNewlyAddedData(l.ctx, treasureTaskSrt)
 	// 创建宝箱阶段
 	for _, item := range in.TreasureTaskStage {
 		treasureTaskStage := model.TreasureTaskStage{
-			Id:               int64(item.ID),
-			Treasure:         int64(item.Treasure),
+			Treasure:         treasureTask.Id,
 			TreasureSequence: int64(item.TreasureSequence),
 			StageExperience:  int64(item.StageExperience),
 			StageReward:      int64(item.StageReward),

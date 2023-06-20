@@ -15,7 +15,7 @@ message CreatePublishTaskInput {
 }
 
 message Mistake {
-  string err = 1;
+  string msg = 1;
 }
 
 // 策展任务信息返回表
@@ -63,8 +63,8 @@ message PublishTaskInput {
 // 任务详情
 message ReTaskDetails {
   RePublishTaskBak rePublishTaskSrt = 1;// 策展任务信息
-  repeated ParticipantBak Participant = 2;// 策展任务参与者列表
-  repeated TaskDemandBak TaskDemandBak = 3;// 任务要求
+  repeated ParticipantBak participant = 2;// 策展任务参与者列表
+  repeated TaskDemandBak taskDemandBak = 3;// 任务要求
 
 
 
@@ -126,14 +126,13 @@ message UserIDInquireInput {
   string userId = 1; // 用戶ID
 }
 
-
+// ReLabelListOut 标签返回结果体
 message ReLabelListOut {
-  repeated ReLabelList reLabelList =1;
+  repeated ReLabelList reLabelList = 1;
 }
-
 // 获取标签列表出参
 message ReLabelList {
-  uint64 iD = 1;
+  uint64 id = 1;
   string creator = 2; // 创建者
   string content = 3; // 内容
 }
@@ -172,12 +171,12 @@ message TreasureTaskInput{
 // 宝箱样式返回结构体
 message ReTreasureTaskSrt{
   PaginationData paginationData = 1; // 分页数据
-  repeated TreasureTaskSrtInput TreasureTaskSrtInput =2; // 宝箱样式返回结构体
+  repeated TreasureTaskSrtInput treasureTaskSrtInput =2; // 宝箱样式返回结构体
 }
 
 // 子样式列表返回数据
 message ReSubtaskStyle{
-  repeated SubtaskStyle SubtaskStyle = 1;
+  repeated SubtaskStyle subtaskStyle = 1;
 }
 // 子样式返回结构体
 message SubtaskStyle {
@@ -191,6 +190,7 @@ message SubtaskStyle {
 
 // AssociatedSubtaskSrt 关联子任务
 message AssociatedSubtaskSrt  {
+  uint64 associatedId = 14; // 关联子任务ID
   uint64 taskId = 1; // 子任务ID
   uint64 treasureId = 2; // 宝箱ID
   string taskName = 3;  // 子任务名称（中）
@@ -204,7 +204,9 @@ message AssociatedSubtaskSrt  {
   string article = 11; // 站外文案
   string link = 12; // 跳转链接
   string label = 13; // 标签
+
 }
+
 // 关联子任务返回列表
 message ReAssociatedSubtask {
   repeated AssociatedSubtask associatedSubtask =1;
@@ -283,10 +285,16 @@ message TreasureTaskListInput{
   int64 maxNum = 4; // 最大输出数
 }
 
+// 完成站内策展任务(喜欢+关注)(未完成)
 message VoluntarilyTaskScheduleInput{
   string userId = 1; // 用户UUID
   int64 taskId = 2; // 任务ID
   int64 genre = 3; // 任务类型，1-喜欢，2-关注
+}
+
+// DetermineWhetherTaskComplete 判断是否完成任务
+message DetermineWhetherTaskComplete{
+
 }
 
 service Task {
@@ -297,7 +305,7 @@ service Task {
   rpc QueryUserLaunchTaskList(UserLaunchTaskListInput) returns(RePublishTask); // 查询个人发起任务列表+参与任务
   rpc CreateLabel(CreateLabelInput) returns(Mistake); // 创建标签
   rpc DeleteLabel(TaskIDInquireInput) returns(Mistake); // 删除标签
-  rpc QueryLabelList(UserIDInquireInput) returns(ReLabelList); // 获取标签列表
+  rpc QueryLabelList(UserIDInquireInput) returns(ReLabelListOut); // 获取标签列表
   rpc PerformTask(PerformTaskInput) returns(Mistake); // 判断是否完成策展任务(未完)
   rpc VoluntarilyTaskSchedule(VoluntarilyTaskScheduleInput) returns(Mistake); // 完成站内策展任务(喜欢+关注)(未完成)
 

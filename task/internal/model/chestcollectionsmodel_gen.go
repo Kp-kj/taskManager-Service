@@ -75,8 +75,9 @@ func (m *defaultChestCollectionsModel) FindOne(ctx context.Context, id int64) (*
 }
 
 func (m *defaultChestCollectionsModel) Insert(ctx context.Context, data *ChestCollections) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, chestCollectionsRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.ChestAmount)
+	chestCollections:= fmt.Sprintf("created_at, user_id, chest_amount")
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, chestCollections)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.UserId, data.ChestAmount)
 	return ret, err
 }
 
@@ -102,7 +103,7 @@ func (m *defaultChestCollectionsModel) FindIndividualAllowance(ctx context.Conte
 }
 // UpdateIndividualAllowance 更新个人宝箱领取数
 func (m *defaultChestCollectionsModel) UpdateIndividualAllowance(ctx context.Context,userID string, amount int64) error {
-	query := fmt.Sprintf("update %s set `chest_amount` = chest_amount + ? where `user_id` = ?", m.table, chestCollectionsRowsWithPlaceHolder)
+	query := fmt.Sprintf("update %s set `chest_amount` = chest_amount + ? where `user_id` = ?", m.table)
 	_, err := m.conn.ExecCtx(ctx, query, amount, userID)
 	return err
 }

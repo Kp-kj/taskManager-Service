@@ -24,7 +24,7 @@ var (
 type (
 	labelModel interface {
 		Insert(ctx context.Context, data *Label) (sql.Result, error)
-		FindOne(ctx context.Context, id int64) (*Label, error)
+		FindOne(ctx context.Context, content,creator string) (*Label, error)
 		Update(ctx context.Context, data *Label) error
 		Delete(ctx context.Context, id int64) error
 		FindLabelAmount(ctx context.Context,creator string) (int64, error)
@@ -56,10 +56,10 @@ func (m *defaultLabelModel) Delete(ctx context.Context, id int64) error {
 	return err
 }
 
-func (m *defaultLabelModel) FindOne(ctx context.Context, id int64) (*Label, error) {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", labelRows, m.table)
+func (m *defaultLabelModel) FindOne(ctx context.Context, content,creator string) (*Label, error) {
+	query := fmt.Sprintf("select %s from %s where `content` = ? AND `creator` = ? limit 1", labelRows, m.table)
 	var resp Label
-	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	err := m.conn.QueryRowCtx(ctx, &resp, query, content,creator)
 	switch err {
 	case nil:
 		return &resp, nil
@@ -73,7 +73,7 @@ func (m *defaultLabelModel) FindOne(ctx context.Context, id int64) (*Label, erro
 func (m *defaultLabelModel) FindList(ctx context.Context, creator string) ([]*Label, error) {
 	query := fmt.Sprintf("select %s from %s where `creator` = ?", labelRows, m.table)
 	var resp []*Label
-	err := m.conn.QueryRow( &resp, query, creator)
+	err := m.conn.QueryRowsCtx(ctx,&resp, query, creator)
 	switch err {
 	case nil:
 		return resp, nil
@@ -87,7 +87,7 @@ func (m *defaultLabelModel) FindList(ctx context.Context, creator string) ([]*La
 func (m *defaultLabelModel) FindLabelAmount(ctx context.Context, creator string) (int64, error) {
 	query := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE creator = ?",  m.table)
 	var amount int64
-	err := m.conn.QueryRow(amount, query, creator)
+	err := m.conn.QueryRow(&amount, query, creator)
 	switch err {
 	case nil:
 		return amount, nil

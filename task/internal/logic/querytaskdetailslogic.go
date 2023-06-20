@@ -24,6 +24,7 @@ func NewQueryTaskDetailsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
+// QueryTaskDetails 查询任务详情
 func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*task.ReTaskDetails, error) {
 	// 查询策展任务详情
 	publishTask, err := l.svcCtx.PublishTaskModel.FindOne(l.ctx, int64(in.TaskId))
@@ -42,12 +43,12 @@ func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*ta
 
 	// 查询用户任务完成度
 	taskDemandBak, err := QueryUserTaskCompletionDegree(l, in, taskDemand)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
 	// 获取任务参与者列表
 	participant, err := l.svcCtx.ParticipantModel.FinParticipantList(l.ctx, in.TaskId)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
 	// 赋值任务参与者列表

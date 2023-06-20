@@ -45,6 +45,7 @@ func (l *QueryChestCollectionLogic) QueryChestCollection(in *task.UserIDInquireI
 	if err != nil {
 		return nil, err
 	}
+	// 用户宝箱赋值信息
 	treasureTaskStageSrt, associatedSubtaskSrt, err := UserChestAssignmentInformation(l, in, treasureTaskStage, associatedSubtask, treasureTask)
 	if err != nil {
 		return nil, err
@@ -79,11 +80,11 @@ func UserChestAssignmentInformation(l *QueryChestCollectionLogic, in *task.UserI
 	for _, item := range associatedSubtask {
 		// 获取日常任务完成信息
 		complete, err := l.svcCtx.DailyTaskModel.FindCompletionTask(l.ctx, in.UserId, item.TaskId.Int64)
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, nil, err
 		}
 		// 判断任务是否完成
-		if complete.Complete.Int64 == 0 {
+		if complete == nil {
 			continue
 		}
 		// 赋值返回日常任务信息

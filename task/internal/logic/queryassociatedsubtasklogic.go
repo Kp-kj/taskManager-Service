@@ -25,7 +25,7 @@ func NewQueryAssociatedSubtaskLogic(ctx context.Context, svcCtx *svc.ServiceCont
 // QueryAssociatedSubtask 查询关联子任务
 func (l *QueryAssociatedSubtaskLogic) QueryAssociatedSubtask(in *task.TaskIDInquireInput) (*task.ReAssociatedSubtask, error) {
 	associatedSubtask, err := l.svcCtx.AssociatedSubtaskModel.FindAssociatedSubtask(l.ctx, int64(in.Id), "treasure_id")
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
 	var reAssociatedSubtask []*task.AssociatedSubtask
