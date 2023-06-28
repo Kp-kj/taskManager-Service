@@ -29,7 +29,7 @@ type (
 		Update(ctx context.Context, data *Participant) error
 		Delete(ctx context.Context, id int64) error
 		FinParticipantList(ctx context.Context,tashkId uint64) ([]*Participant, error)
-		FindParticipantAmount(ctx context.Context, status int64,genre string) (int64, error)
+		FindParticipantAmount(ctx context.Context, status interface{},genre string) (int64, error)
 		FindParticipantList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*Participant, error)
 		GetListIndividualParticipating(ctx context.Context, userId string,maxNum,startLine int64) ([]*Participant, error)
 		UpdateParticipant(ctx context.Context, userId string,taskId uint64) error
@@ -117,7 +117,7 @@ func (m *defaultParticipantModel) FinParticipantList(ctx context.Context, tashkI
 }
 
 // FinParticipantAmount 获取任务数量
-func (m *defaultParticipantModel) FindParticipantAmount(ctx context.Context, status int64,genre string) (int64, error) {
+func (m *defaultParticipantModel) FindParticipantAmount(ctx context.Context, status interface{},genre string) (int64, error) {
 	query := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE `%s` = ?", m.table,genre)
 	var resp int64
 	err := m.conn.QueryRow(&resp, query, status)
@@ -184,11 +184,11 @@ func (m *defaultParticipantModel) FindTaskParticipant(ctx context.Context, userI
 // FindListParticipants 任务参与者
 func (m *defaultParticipantModel) FindListParticipants(ctx context.Context, userId string,taskId int64) (*Participant, error) {
 	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `task_id` = ? ORDER BY id DESC", participantRows, m.table)
-	var resp *Participant
+	var resp Participant
 	err := m.conn.QueryRow(&resp, query, userId,taskId)
 	switch err {
 	case nil:
-		return resp, nil
+		return &resp, nil
 	case sqlc.ErrNotFound:
 		return nil, ErrNotFound
 	default:

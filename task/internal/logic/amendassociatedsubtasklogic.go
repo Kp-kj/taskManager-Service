@@ -34,24 +34,29 @@ func (l *AmendAssociatedSubtaskLogic) AmendAssociatedSubtask(in *task.Associated
 			return &task.Mistake{Msg: "站内任务不需要额外信息"}, fmt.Errorf("站内任务不需要额外信息")
 		}
 	}
+	fmt.Printf("111111111111111111111111111111\n")
 	// 查询宝箱样式ID
 	treasureTask, err := l.svcCtx.TreasureTaskModel.FindOne(l.ctx, int64(in.TreasureId))
 	if err != nil {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
+	fmt.Printf("222222222222222\n")
 	// 查询是否存在已关联任务FindAssociatedSubtask
 	associatedSubtask, err := l.svcCtx.AssociatedSubtaskModel.FindAssociatedSubtask(l.ctx, int64(in.TreasureId), "id")
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
+	fmt.Printf("33333333333333333\n")
 	// 获取子任务是否一致
 	subtaskStyle, err := l.svcCtx.SubtaskStyleModel.FindOne(l.ctx, int64(in.TaskId))
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
+	fmt.Printf("555555555555\n")
 	if subtaskStyle.TaskName.String != in.TaskName {
 		return &task.Mistake{Msg: "任务样式不一致"}, fmt.Errorf("任务样式不一致")
 	}
+	fmt.Printf("66666666666666666\n")
 	//  判断是否已存在关联子任务,进行奖励计算
 	var experience int
 	var reward int
@@ -70,11 +75,13 @@ func (l *AmendAssociatedSubtaskLogic) AmendAssociatedSubtask(in *task.Associated
 			return &task.Mistake{Msg: "经验超出预算数量"}, fmt.Errorf("经验超出预算数量")
 		}
 	}
+	fmt.Printf("77777777777777777\n")
 	err = MakeDataChanges(l, in)
 	if err != nil {
 		fmt.Printf("err1:%v\n", err)
 		return &task.Mistake{Msg: err.Error()}, err
 	}
+	fmt.Printf("888888888888888\n")
 	return &task.Mistake{Msg: "succeed"}, nil
 }
 
@@ -104,6 +111,7 @@ func MakeDataChanges(l *AmendAssociatedSubtaskLogic, in *task.AssociatedSubtaskS
 			return err
 		}
 	} else {
+		// 编辑管理子任务
 		associatedSubtaskSrt.Id = int64(in.AssociatedId)
 		err := l.svcCtx.AssociatedSubtaskModel.Update(l.ctx, &associatedSubtaskSrt)
 		if err != nil {

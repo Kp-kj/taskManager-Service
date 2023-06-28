@@ -37,8 +37,8 @@ func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*ta
 		return nil, err
 	}
 	// 赋值任务要求详情
-	rePublishTask := givePublishTask(publishTask, taskDemand)
 
+	rePublishTask := givePublishTask(publishTask, taskDemand)
 	// 获取推特详情（未完）+用户账户
 
 	// 查询用户任务完成度
@@ -68,15 +68,19 @@ func QueryUserTaskCompletionDegree(l *QueryTaskDetailsLogic, in *task.TaskDetail
 	var taskDemandBak []*task.TaskDemandBak
 	for _, item := range taskDemand {
 		treasureStage, err := l.svcCtx.TreasureStagesModel.FindSpecificTask(l.ctx, in.UserId, uint(in.TaskId), int(item.TaskName.Int64))
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, err
+		}
+		var taskStatus int32
+		if treasureStage != nil {
+			taskStatus = int32(treasureStage.TaskStatus.Int64)
 		}
 		taskDemandBak = append(taskDemandBak, &task.TaskDemandBak{
 			TaskID:     uint64(item.TaskName.Int64),
 			TaskName:   item.TaskName.Int64,
 			TaskDemand: item.TaskDemand.String,
 			Article:    item.Article.String,
-			Done:       int32(treasureStage.TaskStatus.Int64),
+			Done:       taskStatus,
 		})
 	}
 	return taskDemandBak, nil

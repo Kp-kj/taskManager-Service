@@ -112,7 +112,7 @@ func (m *defaultTreasureStagesModel) tableName() string {
 func (m *defaultTreasureStagesModel) FindPersonalMissionCompletionDetails(ctx context.Context, userId string,taskId int64) ([]*TreasureStages, error) {
 	query := fmt.Sprintf("select %s from %s where `user_id` = ? AND `task_id` = ?", treasureStagesRows, m.table)
 	var resp []*TreasureStages
-	err := m.conn.QueryRow(&resp, query, userId,taskId)
+	err := m.conn.QueryRows(&resp, query, userId,taskId)
 	switch err {
 	case nil:
 		return resp, nil

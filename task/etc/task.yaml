@@ -11,11 +11,11 @@ Log:
   Compress: true # 是否压缩
   KeepDays: 7 # 保留天数
 
-#Etcd:
-#  Hosts:
-#  - localhost:2379
-#  - localhost:2379
-#  Key: user.rpc
+Etcd:
+ Hosts:
+#  - 47.243.34.199:2379
+   - 127.0.0.1:2379
+ Key: task.rpc
 
 DB:
   DataSource: root:123456@tcp(localhost:3306)/adfi?charset=utf8&parseTime=True&loc=Local

@@ -28,8 +28,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*PublishTask, error)
 		Update(ctx context.Context, data *PublishTask) error
 		Delete(ctx context.Context, id int64) error
-		FindPublishTaskAmount(ctx context.Context, status int,genre string) (int64, error)
-		FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*PublishTask, error)
+		FindPublishTaskAmount(ctx context.Context, status interface{},genre string) (int64, error)
+		FindPublishTaskList(ctx context.Context, tashkId interface{},maxNum,startLine int64,genre string) ([]*PublishTask, error)
 		FindTaskInformationBasedID(ctx context.Context, tashkId string) ([]*PublishTask, error)
 		UpdateNumberCompleters(ctx context.Context, data uint64) error
 		FindTaskCount(ctx context.Context, userId string) (int64, error)
@@ -103,7 +103,7 @@ func (m *defaultPublishTaskModel) tableName() string {
 }
 
 // FinParticipantAmount 获取任务数量
-func (m *defaultPublishTaskModel) FindPublishTaskAmount(ctx context.Context, status int,genre string) (int64, error) {
+func (m *defaultPublishTaskModel) FindPublishTaskAmount(ctx context.Context, status interface{},genre string) (int64, error) {
 	query := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE `%s` = ?", m.table,genre)
 	var resp int64
 	err := m.conn.QueryRow(&resp, query, status)
@@ -118,7 +118,7 @@ func (m *defaultPublishTaskModel) FindPublishTaskAmount(ctx context.Context, sta
 }
 
 // FindTaskList 按条件查询策展任务
-func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashkId,maxNum,startLine int64,genre string) ([]*PublishTask, error) {
+func (m *defaultPublishTaskModel) FindPublishTaskList(ctx context.Context, tashkId  interface{},   maxNum,startLine int64,genre string) ([]*PublishTask, error) {
 	query := fmt.Sprintf("select %s from %s where `%s` = ? limit %d offset %d", publishTaskRows, m.table, genre, maxNum, startLine)
 	var resp []*PublishTask
 	err := m.conn.QueryRows(&resp, query, tashkId)

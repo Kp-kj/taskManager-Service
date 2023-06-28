@@ -26,6 +26,7 @@ func NewQueryLabelListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Qu
 
 // QueryLabelList 获取标签列表
 func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task.ReLabelListOut, error) {
+	fmt.Print("11111111111111111111111111111111")
 	reLabelList, err := l.svcCtx.LabelModel.FindList(l.ctx, in.UserId)
 	if err != nil {
 		return nil, err
