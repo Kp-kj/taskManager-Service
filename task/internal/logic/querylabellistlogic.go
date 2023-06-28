@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"task/internal/svc"
+	"task/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -40,7 +40,7 @@ func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task
 		reLabel = append(reLabel, &reLabelListSrt)
 	}
 	reLabelSrt := &task.ReLabelListOut{
-		ReLabelListOut: reLabel,
+		ReLabelList: reLabel,
 	}
 	fmt.Printf("vxxxxx:%v\n", reLabelSrt)
 	return reLabelSrt, nil

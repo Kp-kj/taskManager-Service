@@ -5,11 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"taskManager-Service-main/task/internal/model"
+	"task/internal/model"
 	"time"
 
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"task/internal/svc"
+	"task/task"
 
 	"github.com/shopspring/decimal"
 	"github.com/zeromicro/go-zero/core/logx"
