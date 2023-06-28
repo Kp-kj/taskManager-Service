@@ -3,9 +3,9 @@ package logic
 import (
 	"context"
 	"github.com/zeromicro/go-zero/core/logx"
-	"taskManager-Service-main/task/internal/model"
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"task/internal/model"
+	"task/internal/svc"
+	"task/task"
 )
 
 type QuerySubtaskStyleLogic struct {
