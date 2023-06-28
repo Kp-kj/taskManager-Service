@@ -19,26 +19,27 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Task_CreateCuratorialTask_FullMethodName    = "/task.Task/CreateCuratorialTask"
-	Task_QueryTaskList_FullMethodName           = "/task.Task/QueryTaskList"
-	Task_QueryTaskDetails_FullMethodName        = "/task.Task/QueryTaskDetails"
-	Task_QueryUserLaunchTaskList_FullMethodName = "/task.Task/QueryUserLaunchTaskList"
-	Task_CreateLabel_FullMethodName             = "/task.Task/CreateLabel"
-	Task_DeleteLabel_FullMethodName             = "/task.Task/DeleteLabel"
-	Task_QueryLabelList_FullMethodName          = "/task.Task/QueryLabelList"
-	Task_PerformTask_FullMethodName             = "/task.Task/PerformTask"
-	Task_VoluntarilyTaskSchedule_FullMethodName = "/task.Task/VoluntarilyTaskSchedule"
-	Task_AmendTreasureTask_FullMethodName       = "/task.Task/AmendTreasureTask"
-	Task_ChangeTreasureTask_FullMethodName      = "/task.Task/ChangeTreasureTask"
-	Task_QueryTreasureTaskList_FullMethodName   = "/task.Task/QueryTreasureTaskList"
-	Task_QuerySubtaskStyle_FullMethodName       = "/task.Task/QuerySubtaskStyle"
-	Task_AmendAssociatedSubtask_FullMethodName  = "/task.Task/AmendAssociatedSubtask"
-	Task_DeleteAssociatedSubtask_FullMethodName = "/task.Task/DeleteAssociatedSubtask"
-	Task_QueryAssociatedSubtask_FullMethodName  = "/task.Task/QueryAssociatedSubtask"
-	Task_AmendChestCollection_FullMethodName    = "/task.Task/AmendChestCollection"
-	Task_QueryChestCollection_FullMethodName    = "/task.Task/QueryChestCollection"
-	Task_CreateUserPowerTask_FullMethodName     = "/task.Task/CreateUserPowerTask"
-	Task_CreateSubtaskStyle_FullMethodName      = "/task.Task/CreateSubtaskStyle"
+	Task_CreateCuratorialTask_FullMethodName               = "/task.Task/CreateCuratorialTask"
+	Task_QueryTaskList_FullMethodName                      = "/task.Task/QueryTaskList"
+	Task_QueryTaskDetails_FullMethodName                   = "/task.Task/QueryTaskDetails"
+	Task_QueryUserLaunchTaskList_FullMethodName            = "/task.Task/QueryUserLaunchTaskList"
+	Task_CreateLabel_FullMethodName                        = "/task.Task/CreateLabel"
+	Task_DeleteLabel_FullMethodName                        = "/task.Task/DeleteLabel"
+	Task_QueryLabelList_FullMethodName                     = "/task.Task/QueryLabelList"
+	Task_PerformTask_FullMethodName                        = "/task.Task/PerformTask"
+	Task_VoluntarilyTaskSchedule_FullMethodName            = "/task.Task/VoluntarilyTaskSchedule"
+	Task_AmendTreasureTask_FullMethodName                  = "/task.Task/AmendTreasureTask"
+	Task_ChangeTreasureTask_FullMethodName                 = "/task.Task/ChangeTreasureTask"
+	Task_QueryTreasureTaskList_FullMethodName              = "/task.Task/QueryTreasureTaskList"
+	Task_QuerySubtaskStyle_FullMethodName                  = "/task.Task/QuerySubtaskStyle"
+	Task_AmendAssociatedSubtask_FullMethodName             = "/task.Task/AmendAssociatedSubtask"
+	Task_DeleteAssociatedSubtask_FullMethodName            = "/task.Task/DeleteAssociatedSubtask"
+	Task_QueryAssociatedSubtask_FullMethodName             = "/task.Task/QueryAssociatedSubtask"
+	Task_AmendChestCollection_FullMethodName               = "/task.Task/AmendChestCollection"
+	Task_QueryChestCollection_FullMethodName               = "/task.Task/QueryChestCollection"
+	Task_CreateUserPowerTask_FullMethodName                = "/task.Task/CreateUserPowerTask"
+	Task_CreateSubtaskStyle_FullMethodName                 = "/task.Task/CreateSubtaskStyle"
+	Task_CreateUserPublishingAssistanceTask_FullMethodName = "/task.Task/CreateUserPublishingAssistanceTask"
 )
 
 // TaskClient is the client API for Task service.
@@ -67,6 +68,7 @@ type TaskClient interface {
 	QueryChestCollection(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReChestCollectionSrt, error)
 	CreateUserPowerTask(ctx context.Context, in *CreateUserPowerTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 	CreateSubtaskStyle(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
+	CreateUserPublishingAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 }
 
 type taskClient struct {
@@ -257,6 +259,15 @@ func (c *taskClient) CreateSubtaskStyle(ctx context.Context, in *UserIDInquireIn
 	return out, nil
 }
 
+func (c *taskClient) CreateUserPublishingAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error) {
+	out := new(Mistake)
+	err := c.cc.Invoke(ctx, Task_CreateUserPublishingAssistanceTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaskServer is the server API for Task service.
 // All implementations must embed UnimplementedTaskServer
 // for forward compatibility
@@ -283,6 +294,7 @@ type TaskServer interface {
 	QueryChestCollection(context.Context, *UserIDInquireInput) (*ReChestCollectionSrt, error)
 	CreateUserPowerTask(context.Context, *CreateUserPowerTaskInput) (*Mistake, error)
 	CreateSubtaskStyle(context.Context, *UserIDInquireInput) (*Mistake, error)
+	CreateUserPublishingAssistanceTask(context.Context, *CreateUserPublishingAssistanceTaskInput) (*Mistake, error)
 	mustEmbedUnimplementedTaskServer()
 }
 
@@ -349,6 +361,9 @@ func (UnimplementedTaskServer) CreateUserPowerTask(context.Context, *CreateUserP
 }
 func (UnimplementedTaskServer) CreateSubtaskStyle(context.Context, *UserIDInquireInput) (*Mistake, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSubtaskStyle not implemented")
+}
+func (UnimplementedTaskServer) CreateUserPublishingAssistanceTask(context.Context, *CreateUserPublishingAssistanceTaskInput) (*Mistake, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUserPublishingAssistanceTask not implemented")
 }
 func (UnimplementedTaskServer) mustEmbedUnimplementedTaskServer() {}
 
@@ -723,6 +738,24 @@ func _Task_CreateSubtaskStyle_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Task_CreateUserPublishingAssistanceTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserPublishingAssistanceTaskInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).CreateUserPublishingAssistanceTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Task_CreateUserPublishingAssistanceTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).CreateUserPublishingAssistanceTask(ctx, req.(*CreateUserPublishingAssistanceTaskInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Task_ServiceDesc is the grpc.ServiceDesc for Task service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -809,6 +842,10 @@ var Task_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSubtaskStyle",
 			Handler:    _Task_CreateSubtaskStyle_Handler,
+		},
+		{
+			MethodName: "CreateUserPublishingAssistanceTask",
+			Handler:    _Task_CreateUserPublishingAssistanceTask_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

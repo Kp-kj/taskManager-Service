@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
-	"taskManager-Service-main/task/internal/model"
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -37,8 +37,12 @@ func (l *QueryChestCollectionLogic) QueryChestCollection(in *task.UserIDInquireI
 	}
 	// 获取宝箱领取度
 	chestCollection, err := l.svcCtx.ChestCollectionsModel.FindIndividualAllowance(l.ctx, in.UserId)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
+	}
+	var chest int64
+	if chestCollection != nil {
+		chest = chestCollection.ChestAmount.Int64
 	}
 	// 获取宝箱阶段信息
 	treasureTaskStage, err := l.svcCtx.TreasureTaskStageModel.FindTreasureInformation(l.ctx, treasureTask.Id, "treasure")
@@ -54,7 +58,7 @@ func (l *QueryChestCollectionLogic) QueryChestCollection(in *task.UserIDInquireI
 	chestCollectionSrt := &task.ReChestCollectionSrt{
 		SerId:             in.UserId,
 		DemandIntegral:    treasureTask.DemandIntegral,
-		ChestAmount:       chestCollection.ChestAmount.Int64,
+		ChestAmount:       chest,
 		RewardQuantity:    treasureTask.RewardQuantity,
 		TreasureTaskStage: treasureTaskStageSrt,
 		AssociatedSubtask: associatedSubtaskSrt,

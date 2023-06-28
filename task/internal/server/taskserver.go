@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"taskManager-Service-main/task/internal/logic"
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"taskManager-Service/internal/logic"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 )
 
 type TaskServer struct {
@@ -21,7 +21,7 @@ func NewTaskServer(svcCtx *svc.ServiceContext) *TaskServer {
 		svcCtx: svcCtx,
 	}
 }
-
+// NewCreateCuratorialTaskLogic
 // 策展任务相关
 func (s *TaskServer) CreateCuratorialTask(ctx context.Context, in *task.CreatePublishTaskInput) (*task.Mistake, error) {
 	l := logic.NewCreateCuratorialTaskLogic(ctx, s.svcCtx)
@@ -122,4 +122,9 @@ func (s *TaskServer) CreateUserPowerTask(ctx context.Context, in *task.CreateUse
 func (s *TaskServer) CreateSubtaskStyle(ctx context.Context, in *task.UserIDInquireInput) (*task.Mistake, error) {
 	l := logic.NewCreateSubtaskStyleLogic(ctx, s.svcCtx)
 	return l.CreateSubtaskStyle(in)
+}
+
+func (s *TaskServer) CreateUserPublishingAssistanceTask(ctx context.Context, in *task.CreateUserPublishingAssistanceTaskInput) (*task.Mistake, error) {
+	l := logic.NewCreateUserPublishingAssistanceTaskLogic(ctx, s.svcCtx)
+	return l.CreateUserPublishingAssistanceTask(in)
 }

@@ -91,8 +91,9 @@ func (m *defaultTaskDemandModel) FindList(ctx context.Context, id int64) ([]*Tas
 }
 
 func (m *defaultTaskDemandModel) Insert(ctx context.Context, data *TaskDemand) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, taskDemandRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.TaskId, data.TaskName, data.TaskDemand, data.Article)
+	taskDemand:="`created_at`,`task_id`,`task_name`,`task_demand`,`article`"	
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, taskDemand)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.TaskId, data.TaskName, data.TaskDemand, data.Article)
 	return ret, err
 }
 

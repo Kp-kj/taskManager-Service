@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,13 +27,19 @@ func NewPerformTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Perfo
 func (l *PerformTaskLogic) PerformTask(in *task.PerformTaskInput) (*task.Mistake, error) {
 	// 获取策展任务详情
 	taskDemand, err := l.svcCtx.TaskDemandModel.FindList(l.ctx, int64(in.TaskId))
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return &task.Mistake{Msg: err.Error()}, err
+	}
+	if len(taskDemand) == 0 {
+		return &task.Mistake{Msg: "策展任务要求不存在"}, nil
 	}
 	// 获取个人任务完成详情
 	treasureStage, err := l.svcCtx.TreasureStagesModel.FindPersonalMissionCompletionDetails(l.ctx, in.UserId, int64(in.TaskId))
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return &task.Mistake{Msg: err.Error()}, err
+	}
+	if len(treasureStage) == 0 {
+		return &task.Mistake{Msg: "任务未完成"}, nil
 	}
 	// 判断是否都完成
 	for _, item1 := range taskDemand {
@@ -60,5 +66,5 @@ func (l *PerformTaskLogic) PerformTask(in *task.PerformTaskInput) (*task.Mistake
 	if err != nil {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
-	return &task.Mistake{Msg: "succeed"}, nil
+	return &task.Mistake{Msg: "任务已完成"}, nil
 }

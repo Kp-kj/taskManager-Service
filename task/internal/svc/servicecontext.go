@@ -1,9 +1,10 @@
 package svc
 
 import (
+	"taskManager-Service/internal/config"
+	"taskManager-Service/internal/model"
+
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
-	"taskManager-Service-main/task/internal/config"
-	"taskManager-Service-main/task/internal/model"
 )
 
 type ServiceContext struct {

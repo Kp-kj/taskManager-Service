@@ -25,7 +25,7 @@ var (
 type (
 	userPowerTaskModel interface {
 		Insert(ctx context.Context, data *UserPowerTask) (sql.Result, error)
-		FindOne(ctx context.Context, id int64) (*UserPowerTask, error)
+		FindOne(ctx context.Context, publishesUserId,helperUserId string) (*UserPowerTask, error)
 		Update(ctx context.Context, data *UserPowerTask) error
 		Delete(ctx context.Context, id int64) error
 		FindNumberHelpings(ctx context.Context, userId string) (int64, error)
@@ -59,10 +59,10 @@ func (m *defaultUserPowerTaskModel) Delete(ctx context.Context, id int64) error 
 	return err
 }
 
-func (m *defaultUserPowerTaskModel) FindOne(ctx context.Context, id int64) (*UserPowerTask, error) {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userPowerTaskRows, m.table)
+func (m *defaultUserPowerTaskModel) FindOne(ctx context.Context, publishesUserId,helperUserId string) (*UserPowerTask, error) {
+	query := fmt.Sprintf("select %s from %s where `publishes_user_id` = ? AND `helper_user_id` = ? limit 1", userPowerTaskRows, m.table)
 	var resp UserPowerTask
-	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
+	err := m.conn.QueryRowCtx(ctx, &resp, query, publishesUserId,helperUserId)
 	switch err {
 	case nil:
 		return &resp, nil

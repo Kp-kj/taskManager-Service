@@ -4,12 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
-	"taskManager-Service-main/task/internal/model"
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 	"time"
-
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
 
 	"github.com/shopspring/decimal"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -31,18 +29,6 @@ func NewCreateCuratorialTaskLogic(ctx context.Context, svcCtx *svc.ServiceContex
 
 // CreateCuratorialTask 创建策展任务
 func (l *CreateCuratorialTaskLogic) CreateCuratorialTask(in *task.CreatePublishTaskInput) (*task.Mistake, error) {
-	// 判断推特文章地址是否正确
-	if !strings.Contains(in.TweetAddress, "twitter.com/") {
-		return &task.Mistake{Msg: "推特文章地址不正确"}, nil
-	}
-	// 判断金额是否合规（是否小于0.01）
-	if decimal.NewFromFloat(in.AwardAmount).LessThan(decimal.NewFromFloat(0.01)) {
-		return &task.Mistake{Msg: "奖励金额最小为0.01"}, nil
-	}
-	// 判断用户数是否合规
-	if in.MaxUser < 10 {
-		return &task.Mistake{Msg: "奖励用户数量不能少于10人"}, nil
-	}
 	// 查询用户是否存在
 	_, err := QueryUser(in.Creator)
 	if err != nil {
@@ -64,7 +50,8 @@ func (l *CreateCuratorialTaskLogic) CreateCuratorialTask(in *task.CreatePublishT
 	for _, item := range in.Label {
 		// 判断标签是否存在
 		labelSrt, err := l.svcCtx.LabelModel.FindOne(l.ctx, item, in.Creator)
-		if err != nil {
+		if err != nil && err.Error() != "sql: no rows in result set" {
+			fmt.Printf("item:%v\n", item)
 			return &task.Mistake{Msg: err.Error()}, err
 		}
 		if labelSrt.Id == 0 {
@@ -77,11 +64,11 @@ func (l *CreateCuratorialTaskLogic) CreateCuratorialTask(in *task.CreatePublishT
 	if err != nil {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
-	// 每日任务—校验发布策展任务
-	exist, err := verifyPublishCuration(l, in.Creator, "发布策展任务")
-	if err != nil || !exist {
-		return &task.Mistake{Msg: err.Error()}, err
-	}
+	// // 每日任务—校验发布策展任务
+	// exist, err := verifyPublishCuration(l, in.Creator, "发布策展任务")
+	// if err != nil || !exist {
+	// 	return &task.Mistake{Msg: err.Error()}, err
+	// }
 	return &task.Mistake{Msg: "succeed"}, nil
 }
 

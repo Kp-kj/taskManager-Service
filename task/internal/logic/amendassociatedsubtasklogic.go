@@ -4,10 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"taskManager-Service-main/task/internal/model"
 
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"time"
+
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -36,7 +38,7 @@ func (l *AmendAssociatedSubtaskLogic) AmendAssociatedSubtask(in *task.Associated
 	}
 	// 查询宝箱样式ID
 	treasureTask, err := l.svcCtx.TreasureTaskModel.FindOne(l.ctx, int64(in.TreasureId))
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
 	// 查询是否存在已关联任务FindAssociatedSubtask
@@ -72,7 +74,6 @@ func (l *AmendAssociatedSubtaskLogic) AmendAssociatedSubtask(in *task.Associated
 	}
 	err = MakeDataChanges(l, in)
 	if err != nil {
-		fmt.Printf("err1:%v\n", err)
 		return &task.Mistake{Msg: err.Error()}, err
 	}
 	return &task.Mistake{Msg: "succeed"}, nil
@@ -82,6 +83,7 @@ func (l *AmendAssociatedSubtaskLogic) AmendAssociatedSubtask(in *task.Associated
 func MakeDataChanges(l *AmendAssociatedSubtaskLogic, in *task.AssociatedSubtaskSrt) error {
 	// 赋值数据
 	associatedSubtaskSrt := model.AssociatedSubtask{
+		CreatedAt:      sql.NullTime{Time: time.Now(), Valid: true},
 		TaskId:         sql.NullInt64{Int64: int64(in.TaskId), Valid: true},
 		TaskName:       sql.NullString{String: in.TaskName, Valid: true},
 		TaskNameEng:    sql.NullString{String: in.TaskNameEng, Valid: true},
@@ -104,6 +106,7 @@ func MakeDataChanges(l *AmendAssociatedSubtaskLogic, in *task.AssociatedSubtaskS
 			return err
 		}
 	} else {
+		// 编辑管理子任务
 		associatedSubtaskSrt.Id = int64(in.AssociatedId)
 		err := l.svcCtx.AssociatedSubtaskModel.Update(l.ctx, &associatedSubtaskSrt)
 		if err != nil {

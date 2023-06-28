@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,7 +33,6 @@ func (l *ChangeTreasureTaskLogic) ChangeTreasureTask(in *task.TreasureTaskInput)
 	case 0:
 		err := GroundingTreasureTask(l, in)
 		if err != nil {
-
 			return &task.Mistake{Msg: fmt.Sprintf("删除宝箱样式失败:%v", err)}, err
 		}
 	case 1:
@@ -51,11 +50,11 @@ func (l *ChangeTreasureTaskLogic) ChangeTreasureTask(in *task.TreasureTaskInput)
 func GroundingTreasureTask(l *ChangeTreasureTaskLogic, in *task.TreasureTaskInput) error {
 	// 查看宝箱是否存在
 	treasureTask, err := l.svcCtx.TreasureTaskModel.FindOne(l.ctx, int64(in.Id))
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return err
 	}
 	// 判断是否存在
-	if treasureTask.Id == 0 {
+	if treasureTask == nil {
 		return fmt.Errorf("宝箱样式不存在")
 	}
 	// 更新redis上架宝箱的数量（未完）
@@ -89,7 +88,6 @@ func DeleteTreasureTask(l *ChangeTreasureTaskLogic, in *task.TreasureTaskInput) 
 		return fmt.Errorf("上架任务不允许删除")
 	}
 	err = l.svcCtx.TreasureTaskModel.Delete(l.ctx, int64(in.Id))
-	fmt.Printf("删除宝箱样式111111111111111111111:%v\n", err)
 	if err != nil {
 		return err
 	}

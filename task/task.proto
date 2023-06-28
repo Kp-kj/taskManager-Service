@@ -297,6 +297,12 @@ message DetermineWhetherTaskComplete{
 
 }
 
+// CreateUserPublishingAssistanceTaskInput 创建用户发布助力任务
+message CreateUserPublishingAssistanceTaskInput{
+  string user_id = 1; 
+}
+
+
 service Task {
   // 策展任务相关
   rpc CreateCuratorialTask(CreatePublishTaskInput) returns(Mistake); // 创建策展任务
@@ -321,4 +327,5 @@ service Task {
   rpc QueryChestCollection(UserIDInquireInput) returns(ReChestCollectionSrt); // 获取用户宝箱进度
   rpc CreateUserPowerTask(CreateUserPowerTaskInput) returns(Mistake); // 创建用户助力信息
   rpc CreateSubtaskStyle(UserIDInquireInput) returns(Mistake); // 创建子任务样式
+  rpc CreateUserPublishingAssistanceTask(CreateUserPublishingAssistanceTaskInput)returns(Mistake); // 创建用户发布助力任务表
 }

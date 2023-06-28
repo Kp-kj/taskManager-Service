@@ -1,4 +1,4 @@
-module taskManager-Service-main
+module taskManager-Service
 
 go 1.20
 

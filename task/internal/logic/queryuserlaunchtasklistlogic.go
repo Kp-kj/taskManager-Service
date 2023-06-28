@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"fmt"
-	"taskManager-Service-main/task/internal/model"
+	"taskManager-Service/task/internal/model"
 
-	"taskManager-Service-main/task/internal/svc"
-	"taskManager-Service-main/task/task"
+	"taskManager-Service/task/internal/svc"
+	"taskManager-Service/task/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -60,7 +60,7 @@ func GetTheTaskList(l *QueryUserLaunchTaskListLogic, in *task.UserLaunchTaskList
 	case 1:
 		// 查询个人发起任务列表
 		// 获取数据总量
-		totalAmount, err = l.svcCtx.PublishTaskModel.FindPublishTaskAmount(l.ctx, int(in.Status), "creator")
+		totalAmount, err = l.svcCtx.PublishTaskModel.FindPublishTaskAmount(l.ctx, in.UserId, "creator")
 		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
@@ -70,7 +70,7 @@ func GetTheTaskList(l *QueryUserLaunchTaskListLogic, in *task.UserLaunchTaskList
 			return nil, totalAmount, err
 		}
 		// 查询个人发起任务列表
-		publishTaskList, err = l.svcCtx.PublishTaskModel.FindPublishTaskList(l.ctx, in.Status, in.MaxNum, startLine, "creator")
+		publishTaskList, err = l.svcCtx.PublishTaskModel.FindPublishTaskList(l.ctx, in.UserId, in.MaxNum, startLine, "creator")
 		if err != nil && err.Error() != "sql: no rows in result set" {
 			return nil, totalAmount, err
 		}
@@ -78,7 +78,7 @@ func GetTheTaskList(l *QueryUserLaunchTaskListLogic, in *task.UserLaunchTaskList
 		// 查询个人参与任务
 		// 查询参与列表数量
 
-		totalAmount, err = l.svcCtx.ParticipantModel.FindParticipantAmount(l.ctx, in.Status, "user_id")
+		totalAmount, err = l.svcCtx.ParticipantModel.FindParticipantAmount(l.ctx, in.UserId, "user_id") // 改为userID，查询sql需要重写
 		if err != nil {
 			return nil, totalAmount, err
 		}
