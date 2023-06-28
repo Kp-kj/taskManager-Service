@@ -39,7 +39,7 @@ func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task
 		reLabel = append(reLabel, &reLabelListSrt)
 	}
 	reLabelSrt := &task.ReLabelListOut{
-		ReLabelListOut: reLabel,
+		ReLabelList: reLabel,
 	}
 	return reLabelSrt, nil
 }

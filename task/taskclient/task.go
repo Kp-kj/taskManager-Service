@@ -73,7 +73,7 @@ type (
 		QueryChestCollection(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReChestCollectionSrt, error)
 		CreateUserPowerTask(ctx context.Context, in *CreateUserPowerTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 		CreateSubtaskStyle(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
-		CreateUserPublishingAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error)
+		CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 	}
 
 	defaultTask struct {
@@ -189,7 +189,7 @@ func (m *defaultTask) CreateSubtaskStyle(ctx context.Context, in *UserIDInquireI
 	return client.CreateSubtaskStyle(ctx, in, opts...)
 }
 
-func (m *defaultTask) CreateUserPublishingAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error) {
+func (m *defaultTask) CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error) {
 	client := task.NewTaskClient(m.cli.Conn())
-	return client.CreateUserPublishingAssistanceTask(ctx, in, opts...)
+	return client.CreateAssistanceTask(ctx, in, opts...)
 }

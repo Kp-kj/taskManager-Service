@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"fmt"
-	"taskManager-Service/task/internal/model"
+	"taskManager-Service/internal/model"
 
-	"taskManager-Service/task/internal/svc"
-	"taskManager-Service/task/task"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

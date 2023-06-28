@@ -36,7 +36,6 @@ func (l *AmendTreasureTaskLogic) AmendTreasureTask(in *task.TreasureTaskSrtInput
 	if int(in.RewardQuantity) != len(in.TreasureTaskStage) {
 		return &task.Mistake{Msg: "宝箱阶段奖励数量不合规"}, fmt.Errorf("宝箱阶段奖励数量不合规")
 	}
-	fmt.Print("1111111111\n")
 	// 赋值宝箱样式
 	treasureTaskSrt := model.TreasureTask{
 		Id:               int64(in.Id),
@@ -57,7 +56,6 @@ func (l *AmendTreasureTaskLogic) AmendTreasureTask(in *task.TreasureTaskSrtInput
 		// 创建
 		err := CreateTheChestStyle(l, in, treasureTaskSrt)
 		if err != nil {
-			fmt.Printf("创建:%v\n", err)
 			return &task.Mistake{Msg: err.Error()}, err
 		}
 	}
@@ -87,13 +85,10 @@ func CreateTheChestStyle(l *AmendTreasureTaskLogic, in *task.TreasureTaskSrtInpu
 	treasureTaskSrt.CreatedAt = sql.NullTime{Time: time.Now(), Valid: true}
 	_, err := l.svcCtx.TreasureTaskModel.Insert(l.ctx, treasureTaskSrt)
 	if err != nil {
-		fmt.Printf("333333333333333:%v\n", err)
 		return err
 	}
-	fmt.Printf("bbbbbbbbbbbbbbbbb:%v\n", err)
 	// 获取刚刚添加的数据（后期改为UUID,未完）
 	treasureTask, _ := l.svcCtx.TreasureTaskModel.FindNewlyAddedData(l.ctx, treasureTaskSrt)
-	fmt.Printf("aaaaaaaaaaaaaaa:%v\n", err)
 	// 创建宝箱阶段
 	for _, item := range in.TreasureTaskStage {
 		treasureTaskStage := model.TreasureTaskStage{
@@ -104,7 +99,6 @@ func CreateTheChestStyle(l *AmendTreasureTaskLogic, in *task.TreasureTaskSrtInpu
 		}
 		_, err := l.svcCtx.TreasureTaskStageModel.Insert(l.ctx, &treasureTaskStage)
 		if err != nil {
-			fmt.Printf("9999999999999:%v\n", err)
 			return err
 		}
 	}

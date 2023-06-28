@@ -21,7 +21,7 @@ func NewTaskServer(svcCtx *svc.ServiceContext) *TaskServer {
 		svcCtx: svcCtx,
 	}
 }
-// NewCreateCuratorialTaskLogic
+
 // 策展任务相关
 func (s *TaskServer) CreateCuratorialTask(ctx context.Context, in *task.CreatePublishTaskInput) (*task.Mistake, error) {
 	l := logic.NewCreateCuratorialTaskLogic(ctx, s.svcCtx)
@@ -124,7 +124,7 @@ func (s *TaskServer) CreateSubtaskStyle(ctx context.Context, in *task.UserIDInqu
 	return l.CreateSubtaskStyle(in)
 }
 
-func (s *TaskServer) CreateUserPublishingAssistanceTask(ctx context.Context, in *task.CreateUserPublishingAssistanceTaskInput) (*task.Mistake, error) {
-	l := logic.NewCreateUserPublishingAssistanceTaskLogic(ctx, s.svcCtx)
-	return l.CreateUserPublishingAssistanceTask(in)
+func (s *TaskServer) CreateAssistanceTask(ctx context.Context, in *task.CreateUserPublishingAssistanceTaskInput) (*task.Mistake, error) {
+	l := logic.NewCreateAssistanceTaskLogic(ctx, s.svcCtx)
+	return l.CreateAssistanceTask(in)
 }

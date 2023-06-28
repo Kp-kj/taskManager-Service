@@ -1,3 +1,0 @@
-2023-06-07T10:44:51.694+08:00	[31;1m error [0m	compress error: remove logs/access.log-2023-06-28: The process cannot access the file because it is being used by another process.	caller=logx/rotatelogger.go:410
-2023-06-07T10:44:51.696+08:00	[31;1m error [0m	compress error: remove logs/stat.log-2023-06-28: The process cannot access the file because it is being used by another process.	caller=logx/rotatelogger.go:410
-2023-06-07T10:44:51.699+08:00	[31;1m error [0m	compress error: remove logs/error.log-2023-06-28: The process cannot access the file because it is being used by another process.	caller=logx/rotatelogger.go:410

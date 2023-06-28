@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
-	"taskManager-Service/task/internal/model"
-	"taskManager-Service/task/internal/svc"
-	"taskManager-Service/task/task"
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -51,7 +51,7 @@ func (l *CreateUserPowerTaskLogic) CreateUserPowerTask(in *task.CreateUserPowerT
 	if err != nil {
 		return &task.Mistake{Msg: err.Error()}, err
 	}
-	return &task.Mistake{}, nil
+	return &task.Mistake{Msg: "succeed"}, nil
 }
 
 // QueryUserPublishesHelperTask 查询用户发布助力信息

@@ -1,3 +1,0 @@
-2023-06-07T10:44:51.688+08:00	[32;1m stat [0m	CPU: 0m, MEMORY: Alloc=3.7Mi, TotalAlloc=7.6Mi, Sys=22.5Mi, NumGC=7	caller=stat/usage.go:61
-2023-06-07T10:44:51.703+08:00	[32;1m stat [0m	(rpc) shedding_stat [1m], cpu: 0, total: 0, pass: 0, drop: 0	caller=load/sheddingstat.go:61
-2023-06-07T10:44:55.498+08:00	[32;1m stat [0m	(task.rpc) - qps: 0.0/s, drops: 0, avg time: 0.0ms, med: 0.0ms, 90th: 0.0ms, 99th: 0.0ms, 99.9th: 0.0ms	caller=stat/metrics.go:210
