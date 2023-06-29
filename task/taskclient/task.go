@@ -48,6 +48,7 @@ type (
 	TreasureTaskStageSeed                   = task.TreasureTaskStageSeed
 	UserIDInquireInput                      = task.UserIDInquireInput
 	UserLaunchTaskListInput                 = task.UserLaunchTaskListInput
+	UserPublishingAssistanceTask            = task.UserPublishingAssistanceTask
 	VoluntarilyTaskScheduleInput            = task.VoluntarilyTaskScheduleInput
 
 	Task interface {
@@ -74,6 +75,8 @@ type (
 		CreateUserPowerTask(ctx context.Context, in *CreateUserPowerTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 		CreateSubtaskStyle(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
 		CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error)
+		QueryAssistanceTask(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*UserPublishingAssistanceTask, error)
+		Ping(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
 	}
 
 	defaultTask struct {
@@ -192,4 +195,14 @@ func (m *defaultTask) CreateSubtaskStyle(ctx context.Context, in *UserIDInquireI
 func (m *defaultTask) CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error) {
 	client := task.NewTaskClient(m.cli.Conn())
 	return client.CreateAssistanceTask(ctx, in, opts...)
+}
+
+func (m *defaultTask) QueryAssistanceTask(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*UserPublishingAssistanceTask, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.QueryAssistanceTask(ctx, in, opts...)
+}
+
+func (m *defaultTask) Ping(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.Ping(ctx, in, opts...)
 }

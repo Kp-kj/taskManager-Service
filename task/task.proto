@@ -299,8 +299,23 @@ message DetermineWhetherTaskComplete{
 
 // CreateUserPublishingAssistanceTaskInput 创建用户发布助力任务
 message CreateUserPublishingAssistanceTaskInput{
-  string user_id = 1; 
+  string user_id = 1;
+  string userName = 2;
+  string avatar = 3;
 }
+
+// QueryUserPublishingAssistanceTask 查询用户发布助力信息
+message UserPublishingAssistanceTask{
+  int64  ID        = 1;
+  string CreatedAt = 2;
+  string UserId    = 3;
+  string UserName  = 4;
+  string Avatar    = 5;
+  string Article   = 6;
+  string Link      = 7;
+  string Label     = 8;
+}
+
 
 
 service Task {
@@ -328,4 +343,7 @@ service Task {
   rpc CreateUserPowerTask(CreateUserPowerTaskInput) returns(Mistake); // 创建用户助力信息
   rpc CreateSubtaskStyle(UserIDInquireInput) returns(Mistake); // 创建子任务样式
   rpc CreateAssistanceTask(CreateUserPublishingAssistanceTaskInput)returns(Mistake); // 创建用户发布助力任务表
+  rpc QueryAssistanceTask(UserIDInquireInput) returns(UserPublishingAssistanceTask); // 查询用户发布助力信息
+  rpc ping(TaskIDInquireInput) returns(Mistake);
+
 }

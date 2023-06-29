@@ -40,6 +40,8 @@ const (
 	Task_CreateUserPowerTask_FullMethodName     = "/task.Task/CreateUserPowerTask"
 	Task_CreateSubtaskStyle_FullMethodName      = "/task.Task/CreateSubtaskStyle"
 	Task_CreateAssistanceTask_FullMethodName    = "/task.Task/CreateAssistanceTask"
+	Task_QueryAssistanceTask_FullMethodName     = "/task.Task/QueryAssistanceTask"
+	Task_Ping_FullMethodName                    = "/task.Task/ping"
 )
 
 // TaskClient is the client API for Task service.
@@ -69,6 +71,8 @@ type TaskClient interface {
 	CreateUserPowerTask(ctx context.Context, in *CreateUserPowerTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 	CreateSubtaskStyle(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
 	CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error)
+	QueryAssistanceTask(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*UserPublishingAssistanceTask, error)
+	Ping(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
 }
 
 type taskClient struct {
@@ -268,6 +272,24 @@ func (c *taskClient) CreateAssistanceTask(ctx context.Context, in *CreateUserPub
 	return out, nil
 }
 
+func (c *taskClient) QueryAssistanceTask(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*UserPublishingAssistanceTask, error) {
+	out := new(UserPublishingAssistanceTask)
+	err := c.cc.Invoke(ctx, Task_QueryAssistanceTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taskClient) Ping(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error) {
+	out := new(Mistake)
+	err := c.cc.Invoke(ctx, Task_Ping_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TaskServer is the server API for Task service.
 // All implementations must embed UnimplementedTaskServer
 // for forward compatibility
@@ -295,6 +317,8 @@ type TaskServer interface {
 	CreateUserPowerTask(context.Context, *CreateUserPowerTaskInput) (*Mistake, error)
 	CreateSubtaskStyle(context.Context, *UserIDInquireInput) (*Mistake, error)
 	CreateAssistanceTask(context.Context, *CreateUserPublishingAssistanceTaskInput) (*Mistake, error)
+	QueryAssistanceTask(context.Context, *UserIDInquireInput) (*UserPublishingAssistanceTask, error)
+	Ping(context.Context, *TaskIDInquireInput) (*Mistake, error)
 	mustEmbedUnimplementedTaskServer()
 }
 
@@ -364,6 +388,12 @@ func (UnimplementedTaskServer) CreateSubtaskStyle(context.Context, *UserIDInquir
 }
 func (UnimplementedTaskServer) CreateAssistanceTask(context.Context, *CreateUserPublishingAssistanceTaskInput) (*Mistake, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAssistanceTask not implemented")
+}
+func (UnimplementedTaskServer) QueryAssistanceTask(context.Context, *UserIDInquireInput) (*UserPublishingAssistanceTask, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryAssistanceTask not implemented")
+}
+func (UnimplementedTaskServer) Ping(context.Context, *TaskIDInquireInput) (*Mistake, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedTaskServer) mustEmbedUnimplementedTaskServer() {}
 
@@ -756,6 +786,42 @@ func _Task_CreateAssistanceTask_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Task_QueryAssistanceTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIDInquireInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).QueryAssistanceTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Task_QueryAssistanceTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).QueryAssistanceTask(ctx, req.(*UserIDInquireInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Task_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TaskIDInquireInput)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Task_Ping_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).Ping(ctx, req.(*TaskIDInquireInput))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Task_ServiceDesc is the grpc.ServiceDesc for Task service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -846,6 +912,14 @@ var Task_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateAssistanceTask",
 			Handler:    _Task_CreateAssistanceTask_Handler,
+		},
+		{
+			MethodName: "QueryAssistanceTask",
+			Handler:    _Task_QueryAssistanceTask_Handler,
+		},
+		{
+			MethodName: "ping",
+			Handler:    _Task_Ping_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
