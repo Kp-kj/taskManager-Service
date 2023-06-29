@@ -78,8 +78,9 @@ func (m *defaultUserPublishesHelperTaskModel) FindOne(ctx context.Context, id in
 }
 
 func (m *defaultUserPublishesHelperTaskModel) Insert(ctx context.Context, data *UserPublishesHelperTask) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, userPublishesHelperTaskRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.UserId, data.UserName, data.Avatar, data.Article, data.Link, data.Label)
+	userPublishes := "`created_at`,`user_id`,`user_name`,`avatar`,`article`,`link`,`label`"
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, userPublishes)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.UserId, data.UserName, data.Avatar, data.Article, data.Link, data.Label)
 	return ret, err
 }
 

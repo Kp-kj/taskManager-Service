@@ -2,12 +2,13 @@ package logic
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 	"task/internal/model"
-
 	"task/internal/svc"
 	"task/task"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -81,7 +82,8 @@ func EditTheChestStyle(l *AmendTreasureTaskLogic, in *task.TreasureTaskSrtInput,
 // CreateTheChestStyle 创建宝箱样式
 func CreateTheChestStyle(l *AmendTreasureTaskLogic, in *task.TreasureTaskSrtInput, treasureTaskSrt model.TreasureTask) error {
 	// 添加宝箱样式
-	_, err := l.svcCtx.TreasureTaskModel.Insert(l.ctx, &treasureTaskSrt)
+	treasureTaskSrt.CreatedAt = sql.NullTime{Time: time.Now(), Valid: true}
+	_, err := l.svcCtx.TreasureTaskModel.Insert(l.ctx, treasureTaskSrt)
 	if err != nil {
 		return err
 	}

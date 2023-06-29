@@ -123,3 +123,18 @@ func (s *TaskServer) CreateSubtaskStyle(ctx context.Context, in *task.UserIDInqu
 	l := logic.NewCreateSubtaskStyleLogic(ctx, s.svcCtx)
 	return l.CreateSubtaskStyle(in)
 }
+
+func (s *TaskServer) CreateAssistanceTask(ctx context.Context, in *task.CreateUserPublishingAssistanceTaskInput) (*task.Mistake, error) {
+	l := logic.NewCreateAssistanceTaskLogic(ctx, s.svcCtx)
+	return l.CreateAssistanceTask(in)
+}
+
+func (s *TaskServer) QueryAssistanceTask(ctx context.Context, in *task.UserIDInquireInput) (*task.UserPublishingAssistanceTask, error) {
+	l := logic.NewQueryAssistanceTaskLogic(ctx, s.svcCtx)
+	return l.QueryAssistanceTask(in)
+}
+
+func (s *TaskServer) Ping(ctx context.Context, in *task.TaskIDInquireInput) (*task.Mistake, error) {
+	l := logic.NewPingLogic(ctx, s.svcCtx)
+	return l.Ping(in)
+}

@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 
 	"task/internal/svc"
 	"task/task"
@@ -42,6 +41,5 @@ func (l *QueryLabelListLogic) QueryLabelList(in *task.UserIDInquireInput) (*task
 	reLabelSrt := &task.ReLabelListOut{
 		ReLabelList: reLabel,
 	}
-	fmt.Printf("vxxxxx:%v\n", reLabelSrt)
 	return reLabelSrt, nil
 }
