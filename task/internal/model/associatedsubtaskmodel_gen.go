@@ -113,8 +113,9 @@ func (m *defaultAssociatedSubtaskModel) FindSubtaskInformation(ctx context.Conte
 }
 
 func (m *defaultAssociatedSubtaskModel) Insert(ctx context.Context, data *AssociatedSubtask) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, associatedSubtaskRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.DeletedAt, data.TaskId, data.TaskName, data.TaskNameEng, data.TaskDetails, data.TaskDetailsEng, data.TaskStatus, data.Reward, data.Experience, data.Number, data.Article, data.Link, data.Label, data.TreasureId)
+	associatedSubtask:="`created_at`,`task_id`,`task_name`,`task_name_eng`,`task_details`,`task_details_eng`,`task_status`,`reward`,`experience`,`number`,`article`,`link`,`label`,`treasure_id`"
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, associatedSubtask)
+	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.TaskId, data.TaskName, data.TaskNameEng, data.TaskDetails, data.TaskDetailsEng, data.TaskStatus, data.Reward, data.Experience, data.Number, data.Article, data.Link, data.Label, data.TreasureId)
 	return ret, err
 }
 

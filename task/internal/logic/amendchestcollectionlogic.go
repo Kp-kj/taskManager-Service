@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"task/internal/model"
 	"time"
 
+	"task/internal/model"
 	"task/internal/svc"
 	"task/task"
 
@@ -31,12 +31,10 @@ func NewAmendChestCollectionLogic(ctx context.Context, svcCtx *svc.ServiceContex
 func (l *AmendChestCollectionLogic) AmendChestCollection(in *task.AmendChestCollectionInput) (*task.Mistake, error) {
 	// 查询是否存在个人宝箱领取度
 	chestCollection, err := l.svcCtx.ChestCollectionsModel.FindIndividualAllowance(l.ctx, in.UserId)
-	fmt.Printf("查询是否存在个人宝箱领取度:%v\n", err)
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
 	// 判断个人进度是否存在，存在更新，不存在创建
-	fmt.Printf("判断个人进度是否存在，存在更新，不存在创建:%v\n", chestCollection)
 	if chestCollection != nil { // 存在进行更新
 		// 需要获取redis 或者直接读数据库
 		treasureTask, err := l.svcCtx.TreasureTaskModel.FindTreasureQuantity(l.ctx)

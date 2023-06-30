@@ -23,7 +23,7 @@ var (
 
 type (
 	treasureTaskModel interface {
-		Insert(ctx context.Context, data *TreasureTask) (sql.Result, error)
+		Insert(ctx context.Context, data TreasureTask) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*TreasureTask, error)
 		Update(ctx context.Context, data *TreasureTask) error
 		Delete(ctx context.Context, id int64) error
@@ -88,8 +88,8 @@ func (m *defaultTreasureTaskModel) FindOne(ctx context.Context, id int64) (*Trea
 	}
 }
 
-func (m *defaultTreasureTaskModel) Insert(ctx context.Context, data *TreasureTask) (sql.Result, error) {
-	treasure:= fmt.Sprintf("created_at","name","demand_integral","task_reward","experience_reward","reward_quantity")
+func (m *defaultTreasureTaskModel) Insert(ctx context.Context, data TreasureTask) (sql.Result, error) {
+	treasure:= "`created_at`,`name`,`demand_integral`,`task_reward`,`experience_reward`,`reward_quantity`" 
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, treasure)
 	ret, err := m.conn.ExecCtx(ctx, query, data.CreatedAt, data.Name, data.DemandIntegral, data.TaskReward, data.ExperienceReward, data.RewardQuantity)
 	return ret, err

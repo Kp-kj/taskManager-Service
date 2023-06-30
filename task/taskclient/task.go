@@ -13,41 +13,43 @@ import (
 )
 
 type (
-	AmendChestCollectionInput    = task.AmendChestCollectionInput
-	AssociatedSubtask            = task.AssociatedSubtask
-	AssociatedSubtaskSeed        = task.AssociatedSubtaskSeed
-	AssociatedSubtaskSrt         = task.AssociatedSubtaskSrt
-	CreateLabelInput             = task.CreateLabelInput
-	CreatePublishTaskInput       = task.CreatePublishTaskInput
-	CreateUserPowerTaskInput     = task.CreateUserPowerTaskInput
-	DetermineWhetherTaskComplete = task.DetermineWhetherTaskComplete
-	Mistake                      = task.Mistake
-	PaginationData               = task.PaginationData
-	ParticipantBak               = task.ParticipantBak
-	PerformTaskInput             = task.PerformTaskInput
-	PublishTaskInput             = task.PublishTaskInput
-	ReAssociatedSubtask          = task.ReAssociatedSubtask
-	ReChestCollectionSrt         = task.ReChestCollectionSrt
-	ReLabelList                  = task.ReLabelList
-	ReLabelListOut               = task.ReLabelListOut
-	RePublishTask                = task.RePublishTask
-	RePublishTaskBak             = task.RePublishTaskBak
-	ReSubtaskStyle               = task.ReSubtaskStyle
-	ReTaskDetails                = task.ReTaskDetails
-	ReTreasureTaskSrt            = task.ReTreasureTaskSrt
-	SubtaskStyle                 = task.SubtaskStyle
-	TaskDemand                   = task.TaskDemand
-	TaskDemandBak                = task.TaskDemandBak
-	TaskDetailsInput             = task.TaskDetailsInput
-	TaskIDInquireInput           = task.TaskIDInquireInput
-	TreasureTaskInput            = task.TreasureTaskInput
-	TreasureTaskListInput        = task.TreasureTaskListInput
-	TreasureTaskSrtInput         = task.TreasureTaskSrtInput
-	TreasureTaskStage            = task.TreasureTaskStage
-	TreasureTaskStageSeed        = task.TreasureTaskStageSeed
-	UserIDInquireInput           = task.UserIDInquireInput
-	UserLaunchTaskListInput      = task.UserLaunchTaskListInput
-	VoluntarilyTaskScheduleInput = task.VoluntarilyTaskScheduleInput
+	AmendChestCollectionInput               = task.AmendChestCollectionInput
+	AssociatedSubtask                       = task.AssociatedSubtask
+	AssociatedSubtaskSeed                   = task.AssociatedSubtaskSeed
+	AssociatedSubtaskSrt                    = task.AssociatedSubtaskSrt
+	CreateLabelInput                        = task.CreateLabelInput
+	CreatePublishTaskInput                  = task.CreatePublishTaskInput
+	CreateUserPowerTaskInput                = task.CreateUserPowerTaskInput
+	CreateUserPublishingAssistanceTaskInput = task.CreateUserPublishingAssistanceTaskInput
+	DetermineWhetherTaskComplete            = task.DetermineWhetherTaskComplete
+	Mistake                                 = task.Mistake
+	PaginationData                          = task.PaginationData
+	ParticipantBak                          = task.ParticipantBak
+	PerformTaskInput                        = task.PerformTaskInput
+	PublishTaskInput                        = task.PublishTaskInput
+	ReAssociatedSubtask                     = task.ReAssociatedSubtask
+	ReChestCollectionSrt                    = task.ReChestCollectionSrt
+	ReLabelList                             = task.ReLabelList
+	ReLabelListOut                          = task.ReLabelListOut
+	RePublishTask                           = task.RePublishTask
+	RePublishTaskBak                        = task.RePublishTaskBak
+	ReSubtaskStyle                          = task.ReSubtaskStyle
+	ReTaskDetails                           = task.ReTaskDetails
+	ReTreasureTaskSrt                       = task.ReTreasureTaskSrt
+	SubtaskStyle                            = task.SubtaskStyle
+	TaskDemand                              = task.TaskDemand
+	TaskDemandBak                           = task.TaskDemandBak
+	TaskDetailsInput                        = task.TaskDetailsInput
+	TaskIDInquireInput                      = task.TaskIDInquireInput
+	TreasureTaskInput                       = task.TreasureTaskInput
+	TreasureTaskListInput                   = task.TreasureTaskListInput
+	TreasureTaskSrtInput                    = task.TreasureTaskSrtInput
+	TreasureTaskStage                       = task.TreasureTaskStage
+	TreasureTaskStageSeed                   = task.TreasureTaskStageSeed
+	UserIDInquireInput                      = task.UserIDInquireInput
+	UserLaunchTaskListInput                 = task.UserLaunchTaskListInput
+	UserPublishingAssistanceTask            = task.UserPublishingAssistanceTask
+	VoluntarilyTaskScheduleInput            = task.VoluntarilyTaskScheduleInput
 
 	Task interface {
 		// 策展任务相关
@@ -72,6 +74,9 @@ type (
 		QueryChestCollection(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*ReChestCollectionSrt, error)
 		CreateUserPowerTask(ctx context.Context, in *CreateUserPowerTaskInput, opts ...grpc.CallOption) (*Mistake, error)
 		CreateSubtaskStyle(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
+		CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error)
+		QueryAssistanceTask(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*UserPublishingAssistanceTask, error)
+		Ping(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error)
 	}
 
 	defaultTask struct {
@@ -185,4 +190,19 @@ func (m *defaultTask) CreateUserPowerTask(ctx context.Context, in *CreateUserPow
 func (m *defaultTask) CreateSubtaskStyle(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*Mistake, error) {
 	client := task.NewTaskClient(m.cli.Conn())
 	return client.CreateSubtaskStyle(ctx, in, opts...)
+}
+
+func (m *defaultTask) CreateAssistanceTask(ctx context.Context, in *CreateUserPublishingAssistanceTaskInput, opts ...grpc.CallOption) (*Mistake, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.CreateAssistanceTask(ctx, in, opts...)
+}
+
+func (m *defaultTask) QueryAssistanceTask(ctx context.Context, in *UserIDInquireInput, opts ...grpc.CallOption) (*UserPublishingAssistanceTask, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.QueryAssistanceTask(ctx, in, opts...)
+}
+
+func (m *defaultTask) Ping(ctx context.Context, in *TaskIDInquireInput, opts ...grpc.CallOption) (*Mistake, error) {
+	client := task.NewTaskClient(m.cli.Conn())
+	return client.Ping(ctx, in, opts...)
 }
