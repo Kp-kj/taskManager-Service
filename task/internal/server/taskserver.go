@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"task/internal/logic"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/logic"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 )
 
 type TaskServer struct {

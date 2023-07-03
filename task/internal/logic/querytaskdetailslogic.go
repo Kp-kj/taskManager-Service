@@ -2,10 +2,11 @@ package logic
 
 import (
 	"context"
-	"task/internal/model"
+	"fmt"
+	"taskManager-Service/internal/model"
 
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,21 +27,23 @@ func NewQueryTaskDetailsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 // QueryTaskDetails 查询任务详情
 func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*task.ReTaskDetails, error) {
+	fmt.Print("00000000000000\n")
 	// 查询策展任务详情
 	publishTask, err := l.svcCtx.PublishTaskModel.FindOne(l.ctx, int64(in.TaskId))
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
+	fmt.Print("1111111111111111111\n")
 	// 查询任务要求详情
 	taskDemand, err := l.svcCtx.TaskDemandModel.FindList(l.ctx, publishTask.Id)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
 	// 赋值任务要求详情
 
 	rePublishTask := givePublishTask(publishTask, taskDemand)
 	// 获取推特详情（未完）+用户账户
-
+	fmt.Print("2222222222222222\n")
 	// 查询用户任务完成度
 	taskDemandBak, err := QueryUserTaskCompletionDegree(l, in, taskDemand)
 	if err != nil && err.Error() != "sql: no rows in result set" {
@@ -51,6 +54,7 @@ func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*ta
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
+	fmt.Print("33333333333333333333\n")
 	// 赋值任务参与者列表
 	reParticipant := giveParticipant(participant)
 	// 赋值返回值

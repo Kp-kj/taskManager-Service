@@ -1,0 +1,3 @@
+2023-07-02T00:00:05.790+08:00	[34;1m info [0m	compressing log file: logs/stat.log-2023-07-01	caller=logx/rotatelogger.go:408
+2023-07-02T00:00:05.792+08:00	[34;1m info [0m	compressing log file: logs/access.log-2023-07-01	caller=logx/rotatelogger.go:408
+2023-07-02T00:00:05.801+08:00	[34;1m info [0m	compressing log file: logs/error.log-2023-07-01	caller=logx/rotatelogger.go:408
