@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"task/internal/model"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 	"time"
 
 	"github.com/shopspring/decimal"

@@ -6,7 +6,7 @@ package taskclient
 import (
 	"context"
 
-	"task/task"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"

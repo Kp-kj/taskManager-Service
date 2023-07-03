@@ -14,8 +14,8 @@ ADD go.mod .
 ADD go.sum .
 RUN go mod download
 COPY . .
-COPY ./etc /app/etc
-RUN go build -ldflags="-s -w" -o /app/task .
+COPY task/etc /app/etc
+RUN go build -ldflags="-s -w" -o /app/task task/task.go
 
 
 FROM scratch

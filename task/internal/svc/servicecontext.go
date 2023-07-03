@@ -1,8 +1,8 @@
 package svc
 
 import (
-	"task/internal/config"
-	"task/internal/model"
+	"taskManager-Service/internal/config"
+	"taskManager-Service/internal/model"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )

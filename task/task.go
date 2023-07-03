@@ -3,11 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-
-	"task/internal/config"
-	"task/internal/server"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/config"
+	"taskManager-Service/internal/server"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"

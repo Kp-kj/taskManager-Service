@@ -3,9 +3,9 @@ package logic
 import (
 	"context"
 	"strings"
-	"task/internal/model"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="task_server_test@rm-j6cgcm3siu23vcx1xgo.mysql.rds.aliyuncs.com" uuid="c67ed7b2-fbff-4294-9ca3-79de75f7cd52">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rm-j6cgcm3siu23vcx1xgo.mysql.rds.aliyuncs.com:3306/task_server_test</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

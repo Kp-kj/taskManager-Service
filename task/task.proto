@@ -345,5 +345,4 @@ service Task {
   rpc CreateAssistanceTask(CreateUserPublishingAssistanceTaskInput)returns(Mistake); // 创建用户发布助力任务表
   rpc QueryAssistanceTask(UserIDInquireInput) returns(UserPublishingAssistanceTask); // 查询用户发布助力信息
   rpc ping(TaskIDInquireInput) returns(Mistake);
-
 }

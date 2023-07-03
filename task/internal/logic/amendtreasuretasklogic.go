@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"task/internal/model"
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/model"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"

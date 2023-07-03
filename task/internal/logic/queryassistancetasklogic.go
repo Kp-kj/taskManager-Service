@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"task/internal/svc"
-	"task/task"
+	"taskManager-Service/internal/svc"
+	"taskManager-Service/task"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
