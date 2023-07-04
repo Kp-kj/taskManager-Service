@@ -1,3 +1,707 @@
 2023-07-04T00:00:30.498+08:00	[31;1m error [0m	compress error: remove logs/access.log-2023-07-03: The process cannot access the file because it is being used by another process.	caller=logx/rotatelogger.go:410
 2023-07-04T00:00:30.500+08:00	[31;1m error [0m	compress error: remove logs/stat.log-2023-07-03: The process cannot access the file because it is being used by another process.	caller=logx/rotatelogger.go:410
 2023-07-04T00:00:30.508+08:00	[31;1m error [0m	compress error: remove logs/error.log-2023-07-03: The process cannot access the file because it is being used by another process.	caller=logx/rotatelogger.go:410
+2023-07-04T13:17:14.818+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 91 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x2590400, 0x3ab0360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*QueryTaskDetailsLogic).QueryTaskDetails(0xc00055feb8, 0xc0000975c0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/querytaskdetailslogic.go:38 +0x187
+taskManager-Service/internal/server.(*TaskServer).QueryTaskDetails(0x1000000010000?, {0x2b3a960?, 0xc00010bc20}, 0x0?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:38 +0xb6
+taskManager-Service/task._Task_QueryTaskDetails_Handler.func1({0x2b3a960, 0xc00010bc20}, {0x26c92e0?, 0xc0000975c0})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:460 +0x7b
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 53 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x249b940, 0xc00008a5e0})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x249b940?, 0xc00008a5e0?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc00056b6b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x249b940, 0xc00008a5e0})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x249b940, 0xc00008a5e0})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x2b3aa08?, 0xc000416e70?}, {0x26c92e0?, 0xc0000975c0}, 0x3ae8001?, 0xc0006468a0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0}, 0xc0001947a0?, 0xc000097c40)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc000646900, 0xc000097bc0, 0x0, 0xc000097c00)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x289682a, 0x1b}, {0x2b231a8, 0xc000646900}, 0xc0002de4d0}, 0x289682a?, 0x1b?, 0x2977140)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0x11a45a0?, 0x289682a?, 0x1b?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x2b3d958?, 0xc000194800?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x289682a?, 0xc00056b348?}, 0xc00056b330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x289682a?, 0xcee927?}, 0x38?, 0x26fd620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x2b3aa08?, 0xc000416e70}, {0x26c92e0?, 0xc0000975c0}, 0xc0001947a0, 0xc000097b80)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0}, 0xc0001947a0, 0xc000097b40)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0}, 0xc0001947a0, 0xc000097b00)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x2b3aa08?, 0xc000416e70?}, {0x26c92e0?, 0xc0000975c0?}, 0xc0001947a0?, 0xc0006468a0?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2b3aa08, 0xc000416e70}, {0x26c92e0, 0xc0000975c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x2b3aa08?, 0xc0004162d0?}, {0x26c92e0, 0xc0000975c0}, 0xc0001947a0?, 0xc000097880)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x2b3aa08, 0xc0004162d0}, {0x26c92e0, 0xc0000975c0}, 0xc00042da58?, 0x258ea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_QueryTaskDetails_Handler({0x27ef820?, 0xc00058e2e0}, {0x2b3aa08, 0xc0004162d0}, 0xc0002de2a0, 0xc0002061a0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:462 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc00017a000, {0x2b41b40, 0xc000644ea0}, 0xc0000e0d80, 0xc000666690, 0x3ace790, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc00017a000, {0x2b41b40, 0xc000644ea0}, 0xc0000e0d80, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:18:51.937+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 119 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x2290400, 0x37b0360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*QueryTaskDetailsLogic).QueryTaskDetails(0xc00067feb8, 0xc00033a6c0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/querytaskdetailslogic.go:38 +0x187
+taskManager-Service/internal/server.(*TaskServer).QueryTaskDetails(0xc00046f188?, {0x283aa00?, 0xc0005d6f00}, 0xc0006a02a0?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:38 +0xb6
+taskManager-Service/task._Task_QueryTaskDetails_Handler.func1({0x283aa00, 0xc0005d6f00}, {0x23c92e0?, 0xc00033a6c0})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:460 +0x7b
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 103 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x219b940, 0xc000184550})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x219b940?, 0xc000184550?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc0006616b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x219b940, 0xc000184550})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x219b940, 0xc000184550})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x283aaa8?, 0xc0001bd560?}, {0x23c92e0?, 0xc00033a6c0}, 0x37e8001?, 0xc0006069c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0}, 0xc0001952c0?, 0xc00033ad40)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc000606a20, 0xc00033ac80, 0x0, 0xc00033acc0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x2596848, 0x1b}, {0x2823248, 0xc000606a20}, 0xc0006c8620}, 0x2596848?, 0x1b?, 0x2677160)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0xea45a0?, 0x2596848?, 0x1b?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x283d9f8?, 0xc0001953e0?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x2596848?, 0xc000661348?}, 0xc000661330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x2596848?, 0x9ee927?}, 0x38?, 0x23fd620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x283aaa8?, 0xc0001bd560}, {0x23c92e0?, 0xc00033a6c0}, 0xc0001952c0, 0xc00033ac40)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0}, 0xc0001952c0, 0xc00033aa80)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0}, 0xc0001952c0, 0xc00033a9c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x283aaa8?, 0xc0001bd560?}, {0x23c92e0?, 0xc00033a6c0?}, 0xc0001952c0?, 0xc0006069c0?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x283aaa8, 0xc0001bd560}, {0x23c92e0, 0xc00033a6c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x283aaa8?, 0xc0001bccf0?}, {0x23c92e0, 0xc00033a6c0}, 0xc0001952c0?, 0xc00033a780)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x283aaa8, 0xc0001bccf0}, {0x23c92e0, 0xc00033a6c0}, 0xc00015da58?, 0x228ea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_QueryTaskDetails_Handler({0x24ef820?, 0xc00019a2d0}, {0x283aaa8, 0xc0001bccf0}, 0xc0006c84d0, 0xc000194ba0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:462 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000637680, {0x2841be0, 0xc00046f6c0}, 0xc000116240, 0xc0001bc690, 0x37ce790, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc000637680, {0x2841be0, 0xc00046f6c0}, 0xc000116240, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:19:35.011+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 68 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x2270400, 0x3790360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*QueryTaskDetailsLogic).QueryTaskDetails(0xc0003afeb8, 0xc0002b0180)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/querytaskdetailslogic.go:38 +0x187
+taskManager-Service/internal/server.(*TaskServer).QueryTaskDetails(0x0?, {0x281aa40?, 0xc000098640}, 0x0?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:38 +0xb6
+taskManager-Service/task._Task_QueryTaskDetails_Handler.func1({0x281aa40, 0xc000098640}, {0x23a92e0?, 0xc0002b0180})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:460 +0x7b
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 56 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x217b940, 0xc0003f9c60})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x217b940?, 0xc0003f9c60?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc0005456b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x217b940, 0xc0003f9c60})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x217b940, 0xc0003f9c60})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x281aae8?, 0xc0002b7800?}, {0x23a92e0?, 0xc0002b0180}, 0x37c8001?, 0xc00077a570)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180}, 0xc000216100?, 0xc0002b0740)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc00077a5d0, 0xc0002b06c0, 0x0, 0xc0002b0700)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x2576854, 0x1b}, {0x2803288, 0xc00077a5d0}, 0xc000394230}, 0x2576854?, 0x1b?, 0x2657160)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0xe845a0?, 0x2576854?, 0x1b?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x281da38?, 0xc000216240?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x2576854?, 0xc000545348?}, 0xc000545330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x2576854?, 0x9ce927?}, 0x38?, 0x23dd620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x281aae8?, 0xc0002b7800}, {0x23a92e0?, 0xc0002b0180}, 0xc000216100, 0xc0002b0680)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180}, 0xc000216100, 0xc0002b0640)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180}, 0xc000216100, 0xc0002b0600)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x281aae8?, 0xc0002b7800?}, {0x23a92e0?, 0xc0002b0180?}, 0xc000216100?, 0xc00077a570?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x281aae8, 0xc0002b7800}, {0x23a92e0, 0xc0002b0180})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x281aae8?, 0xc0002b6b70?}, {0x23a92e0, 0xc0002b0180}, 0xc000216100?, 0xc0002b0280)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x281aae8, 0xc0002b6b70}, {0x23a92e0, 0xc0002b0180}, 0xc0001a1a58?, 0x226ea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_QueryTaskDetails_Handler({0x24cf820?, 0xc0003f8ef0}, {0x281aae8, 0xc0002b6b70}, 0xc0003940e0, 0xc00043c2c0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:462 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000499680, {0x2821c20, 0xc000504ea0}, 0xc00021e360, 0xc000660990, 0x37ae790, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc000499680, {0x2821c20, 0xc000504ea0}, 0xc00021e360, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:25:21.267+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 85 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x2760400, 0x3c80360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*QueryTaskDetailsLogic).QueryTaskDetails(0xc00049deb8, 0xc00013c080)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/querytaskdetailslogic.go:38 +0x187
+taskManager-Service/internal/server.(*TaskServer).QueryTaskDetails(0xc0002be000?, {0x2d0aa80?, 0xc0005907d0}, 0x0?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:38 +0xb6
+taskManager-Service/task._Task_QueryTaskDetails_Handler.func1({0x2d0aa80, 0xc0005907d0}, {0x28992e0?, 0xc00013c080})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:460 +0x7b
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 73 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x266b940, 0xc000649150})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x266b940?, 0xc000649150?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc0002db6b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x266b940, 0xc000649150})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x266b940, 0xc000649150})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x2d0ab28?, 0xc00013ea20?}, {0x28992e0?, 0xc00013c080}, 0x3cb8001?, 0xc000008c48)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080}, 0xc00008c900?, 0xc00013c680)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc000008cc0, 0xc00013c480, 0x0, 0xc00013c4c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x2a66861, 0x1b}, {0x2cf32c8, 0xc000008cc0}, 0xc00056e3f0}, 0x2a66861?, 0x1b?, 0x2b47180)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0x13745a0?, 0x2a66861?, 0x1b?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x2d0da78?, 0xc00008c960?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x2a66861?, 0xc0002db348?}, 0xc0002db330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x2a66861?, 0xebe927?}, 0x38?, 0x28cd620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x2d0ab28?, 0xc00013ea20}, {0x28992e0?, 0xc00013c080}, 0xc00008c900, 0xc00013c440)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080}, 0xc00008c900, 0xc00013c400)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080}, 0xc00008c900, 0xc00013c3c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x2d0ab28?, 0xc00013ea20?}, {0x28992e0?, 0xc00013c080?}, 0xc00008c900?, 0xc000008c48?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2d0ab28, 0xc00013ea20}, {0x28992e0, 0xc00013c080})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x2d0ab28?, 0xc000115890?}, {0x28992e0, 0xc00013c080}, 0xc00008c900?, 0xc00013c180)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x2d0ab28, 0xc000115890}, {0x28992e0, 0xc00013c080}, 0xc000195a58?, 0x275ea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_QueryTaskDetails_Handler({0x29bf820?, 0xc00010e6f0}, {0x2d0ab28, 0xc000115890}, 0xc00056e150, 0xc00058a140)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:462 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc0002ad680, {0x2d11c60, 0xc000684b60}, 0xc0004347e0, 0xc00058f3e0, 0x3c9e790, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc0002ad680, {0x2d11c60, 0xc000684b60}, 0xc0004347e0, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:26:09.335+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 109 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x23d0400, 0x38f0360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*QueryTaskDetailsLogic).QueryTaskDetails(0xc000541eb8, 0xc000486300)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/querytaskdetailslogic.go:38 +0x187
+taskManager-Service/internal/server.(*TaskServer).QueryTaskDetails(0xc00000ff58?, {0x297aac0?, 0xc00009f450}, 0x10?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:38 +0xb6
+taskManager-Service/task._Task_QueryTaskDetails_Handler.func1({0x297aac0, 0xc00009f450}, {0x25092e0?, 0xc000486300})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:460 +0x7b
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 74 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x22db940, 0xc00010ed20})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x22db940?, 0xc00010ed20?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc0000e36b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x22db940, 0xc00010ed20})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x22db940, 0xc00010ed20})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x297ab68?, 0xc0003957a0?}, {0x25092e0?, 0xc000486300}, 0x3928001?, 0xc000108d80)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300}, 0xc00008c5a0?, 0xc000486780)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc000108e58, 0xc000486700, 0x0, 0xc000486740)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x26d6863, 0x1b}, {0x2963308, 0xc000108e58}, 0xc00011d180}, 0x26d6863?, 0x1b?, 0x27b71a0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0xfe45a0?, 0x26d6863?, 0x1b?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x297dab8?, 0xc00008c600?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x26d6863?, 0xc0000e3348?}, 0xc0000e3330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x26d6863?, 0xb2e927?}, 0x38?, 0x253d620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x297ab68?, 0xc0003957a0}, {0x25092e0?, 0xc000486300}, 0xc00008c5a0, 0xc0004866c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300}, 0xc00008c5a0, 0xc000486680)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300}, 0xc00008c5a0, 0xc000486640)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x297ab68?, 0xc0003957a0?}, {0x25092e0?, 0xc000486300?}, 0xc00008c5a0?, 0xc000108d80?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x297ab68, 0xc0003957a0}, {0x25092e0, 0xc000486300})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x297ab68?, 0xc000394f30?}, {0x25092e0, 0xc000486300}, 0xc00008c5a0?, 0xc0004863c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x297ab68, 0xc000394f30}, {0x25092e0, 0xc000486300}, 0xc00000fa58?, 0x23cea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_QueryTaskDetails_Handler({0x262f820?, 0xc0005047a0}, {0x297ab68, 0xc000394f30}, 0xc00011d030, 0xc00008c440)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:462 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc00022e000, {0x2981ca0, 0xc000644ea0}, 0xc0006a0000, 0xc000394780, 0x390e790, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc00022e000, {0x2981ca0, 0xc000644ea0}, 0xc0006a0000, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:26:52.803+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 86 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x2150400, 0x3670360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*QueryTaskDetailsLogic).QueryTaskDetails(0xc00066deb8, 0xc000362380)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/querytaskdetailslogic.go:38 +0x187
+taskManager-Service/internal/server.(*TaskServer).QueryTaskDetails(0x0?, {0x26fab30?, 0xc0005911a0}, 0x0?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:38 +0xb6
+taskManager-Service/task._Task_QueryTaskDetails_Handler.func1({0x26fab30, 0xc0005911a0}, {0x22892e0?, 0xc000362380})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:460 +0x7b
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 98 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x205b940, 0xc00008a750})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x205b940?, 0xc00008a750?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc0006716b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x205b940, 0xc00008a750})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x205b940, 0xc00008a750})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x26fab68?, 0xc000591110?}, {0x22892e0?, 0xc000362380}, 0x36a8001?, 0xc0004f2a98)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380}, 0xc0001222c0?, 0xc000362740)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc0004f2af8, 0xc0003626c0, 0x0, 0xc000362700)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x2456863, 0x1b}, {0x26e3308, 0xc0004f2af8}, 0xc0000fc700}, 0x2456863?, 0x1b?, 0x25371a0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0xd645a0?, 0x2456863?, 0x1b?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x26fdab8?, 0xc000122320?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x2456863?, 0xc000671348?}, 0xc000671330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x2456863?, 0x8ae927?}, 0x38?, 0x22bd620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x26fab68?, 0xc000591110}, {0x22892e0?, 0xc000362380}, 0xc0001222c0, 0xc000362680)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380}, 0xc0001222c0, 0xc000362640)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380}, 0xc0001222c0, 0xc000362600)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x26fab68?, 0xc000591110?}, {0x22892e0?, 0xc000362380?}, 0xc0001222c0?, 0xc0004f2a98?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x26fab68, 0xc000591110}, {0x22892e0, 0xc000362380})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x26fab68?, 0xc0005908a0?}, {0x22892e0, 0xc000362380}, 0xc0001222c0?, 0xc000362440)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x26fab68, 0xc0005908a0}, {0x22892e0, 0xc000362380}, 0xc0005c3a58?, 0x214ea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_QueryTaskDetails_Handler({0x23af820?, 0xc00059a260}, {0x26fab68, 0xc0005908a0}, 0xc0000fc460, 0xc0001221a0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:462 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000451a40, {0x2701ca0, 0xc000584d00}, 0xc000358120, 0xc000590540, 0x368e790, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc000451a40, {0x2701ca0, 0xc000584d00}, 0xc000358120, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:38:23.644+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 118 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x20d0400, 0x35f0360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*CreateCuratorialTaskLogic).CreateCuratorialTask(0xc000403eb8, 0xc0004dc3f0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/createcuratorialtasklogic.go:57 +0x1e9
+taskManager-Service/internal/server.(*TaskServer).CreateCuratorialTask(0x0?, {0x267ab60?, 0xc0001bb1d0}, 0xc460c8?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:28 +0xb6
+taskManager-Service/task._Task_CreateCuratorialTask_Handler.func1({0x267ab60, 0xc0001bb1d0}, {0x2293de0?, 0xc0004dc3f0})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:424 +0x78
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 88 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x1fdb940, 0xc000270240})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x1fdb940?, 0xc000270240?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc0004fd6b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x1fdb940, 0xc000270240})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x1fdb940, 0xc000270240})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x267ac08?, 0xc000426e10?}, {0x2293de0?, 0xc0004dc3f0}, 0x3628001?, 0xc0001192d8)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0}, 0xc00031a1a0?, 0xc0003b8880)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc000119350, 0xc0003b8780, 0x0, 0xc0003b87c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x23ddfcc, 0x1f}, {0x26633a8, 0xc000119350}, 0xc0002782a0}, 0x23ddfcc?, 0x1f?, 0x24b71e0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0xce45a0?, 0x23ddfcc?, 0x1f?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x267db58?, 0xc00031a200?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x23ddfcc?, 0xc000407348?}, 0xc000407330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x23ddfcc?, 0x82e927?}, 0x38?, 0x223d620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x267ac08?, 0xc000426e10}, {0x2293de0?, 0xc0004dc3f0}, 0xc00031a1a0, 0xc0003b8740)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0}, 0xc00031a1a0, 0xc0003b8700)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0}, 0xc00031a1a0, 0xc000125fc0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x267ac08?, 0xc000426e10?}, {0x2293de0?, 0xc0004dc3f0?}, 0xc00031a1a0?, 0xc0001192d8?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x267ac08, 0xc000426e10}, {0x2293de0, 0xc0004dc3f0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x267ac08?, 0xc0004260f0?}, {0x2293de0, 0xc0004dc3f0}, 0xc00031a1a0?, 0xc000125dc0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x267ac08, 0xc0004260f0}, {0x2293de0, 0xc0004dc3f0}, 0xc000533a58?, 0x20cea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_CreateCuratorialTask_Handler({0x232f820?, 0xc00008ae00}, {0x267ac08, 0xc0004260f0}, 0xc000278000, 0xc000584300)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:426 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc000239860, {0x2681d40, 0xc0001051e0}, 0xc000575440, 0xc000589260, 0x360e760, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc000239860, {0x2681d40, 0xc0001051e0}, 0xc000575440, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
+2023-07-04T13:41:49.914+08:00	[31;1m error [0m	runtime error: invalid memory address or nil pointer dereference
+
+goroutine 105 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:33 +0x46
+panic({0x2520400, 0x3a40360})
+	c:/go/src/runtime/panic.go:884 +0x213
+taskManager-Service/internal/logic.(*CreateCuratorialTaskLogic).CreateCuratorialTask(0xc0004f7eb8, 0xc0001246c0)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/logic/createcuratorialtasklogic.go:53 +0x289
+taskManager-Service/internal/server.(*TaskServer).CreateCuratorialTask(0xc0003487c8?, {0x2acac20?, 0xc0001a6d20}, 0xc00029a0e0?)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/internal/server/taskserver.go:28 +0xb6
+taskManager-Service/task._Task_CreateCuratorialTask_Handler.func1({0x2acac20, 0xc0001a6d20}, {0x26e3de0?, 0xc0001246c0})
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:424 +0x78
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1.1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:39 +0x12f
+created by github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:29 +0x24a
+
+goroutine 88 [running]:
+runtime/debug.Stack()
+	c:/go/src/runtime/debug/stack.go:24 +0x65
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.toPanicError({0x242b940, 0xc0006c6e40})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:40 +0x27
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor.func1({0x242b940?, 0xc0006c6e40?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:27 +0x2c
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.handleCrash(0xc00060d6b0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:35 +0x35
+panic({0x242b940, 0xc0006c6e40})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:75 +0x65
+panic({0x242b940, 0xc0006c6e40})
+	c:/go/src/runtime/panic.go:884 +0x213
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTimeoutInterceptor.func1({0x2acacc8?, 0xc00060f440?}, {0x26e3de0?, 0xc0001246c0}, 0x3a78001?, 0xc000109968)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/timeoutinterceptor.go:45 +0x697
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnarySheddingInterceptor.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0}, 0xc0003923c0?, 0xc000212700)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/sheddinginterceptor.go:43 +0x13d
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor.func1()
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:26 +0x3a
+github.com/zeromicro/go-zero/core/breaker.(*googleBreaker).doReq(0xc000109a28, 0xc000212680, 0x0, 0xc0002126c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/googlebreaker.go:79 +0xc3
+github.com/zeromicro/go-zero/core/breaker.loggedThrottle.doReq({{0x282dfcc, 0x1f}, {0x2ab3468, 0xc000109a28}, 0xc0000ba3f0}, 0x282dfcc?, 0x1f?, 0x2907240)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:172 +0xdf
+github.com/zeromicro/go-zero/core/breaker.(*circuitBreaker).DoWithAcceptable(0x11345a0?, 0x282dfcc?, 0x1f?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breaker.go:122 +0x27
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable.func1({0x2acdc18?, 0xc0003924a0?})
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:20 +0x32
+github.com/zeromicro/go-zero/core/breaker.do({0x282dfcc?, 0xc0004fb348?}, 0xc0004fb330)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:67 +0x2f
+github.com/zeromicro/go-zero/core/breaker.DoWithAcceptable({0x282dfcc?, 0xc7e927?}, 0x38?, 0x268d620?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/core/breaker/breakers.go:19 +0x48
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryBreakerInterceptor({0x2acacc8?, 0xc00060f440}, {0x26e3de0?, 0xc0001246c0}, 0xc0003923c0, 0xc000212640)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/breakerinterceptor.go:24 +0x134
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryPrometheusInterceptor({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0}, 0xc0003923c0, 0xc000212600)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/prometheusinterceptor.go:38 +0x97
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryStatInterceptor.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0}, 0xc0003923c0, 0xc0002125c0)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/statinterceptor.go:61 +0x1c6
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryRecoverInterceptor({0x2acacc8?, 0xc00060f440?}, {0x26e3de0?, 0xc0001246c0?}, 0xc0003923c0?, 0xc000109968?)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/recoverinterceptor.go:30 +0xa4
+google.golang.org/grpc.getChainUnaryHandler.func1({0x2acacc8, 0xc00060f440}, {0x26e3de0, 0xc0001246c0})
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1156 +0xb9
+github.com/zeromicro/go-zero/zrpc/internal/serverinterceptors.UnaryTracingInterceptor({0x2acacc8?, 0xc00060e8a0?}, {0x26e3de0, 0xc0001246c0}, 0xc0003923c0?, 0xc000212400)
+	c:/go/bin/pkg/mod/github.com/zeromicro/go-zero@v1.5.3/zrpc/internal/serverinterceptors/tracinginterceptor.go:24 +0x19d
+google.golang.org/grpc.chainUnaryInterceptors.func1({0x2acacc8, 0xc00060e8a0}, {0x26e3de0, 0xc0001246c0}, 0xc000531a58?, 0x251ea20?)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1147 +0x8f
+taskManager-Service/task._Task_CreateCuratorialTask_Handler({0x277f820?, 0xc0006c6350}, {0x2acacc8, 0xc00060e8a0}, 0xc0000ba150, 0xc000392180)
+	C:/Users/luck/Desktop/code/code/ADFI_Git/xxx/taskManager-Service/task/task/task_grpc.pb.go:426 +0x138
+google.golang.org/grpc.(*Server).processUnaryRPC(0xc0004de000, {0x2ad1e00, 0xc000349520}, 0xc0002006c0, 0xc00060e540, 0x3a5e760, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1337 +0xdf3
+google.golang.org/grpc.(*Server).handleStream(0xc0004de000, {0x2ad1e00, 0xc000349520}, 0xc0002006c0, 0x0)
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:1714 +0xa36
+google.golang.org/grpc.(*Server).serveStreams.func1.1()
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:959 +0x98
+created by google.golang.org/grpc.(*Server).serveStreams.func1
+	c:/go/bin/pkg/mod/google.golang.org/grpc@v1.55.0/server.go:957 +0x18c
+	caller=serverinterceptors/recoverinterceptor.go:40
