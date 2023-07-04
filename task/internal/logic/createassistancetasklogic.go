@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"taskManager-Service/internal/model"
 	"time"
 
@@ -30,7 +29,6 @@ func NewCreateAssistanceTaskLogic(ctx context.Context, svcCtx *svc.ServiceContex
 // CreateAssistanceTask 创建用户发布助力任务
 func (l *CreateAssistanceTaskLogic) CreateAssistanceTask(in *task.CreateUserPublishingAssistanceTaskInput) (*task.Mistake, error) {
 	// 获取用户发布助力任务
-	fmt.Print("11111111111111111111111\n")
 	exist, err := l.svcCtx.UserPublishesHelperTaskModel.FindUserPublishesHelperTask(l.ctx, in.UserId)
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
@@ -39,12 +37,10 @@ func (l *CreateAssistanceTaskLogic) CreateAssistanceTask(in *task.CreateUserPubl
 		return &task.Mistake{Msg: "今日用户发布助力任务已存在"}, nil
 	}
 	// 获取今日任务-助力信息
-	fmt.Print("222222222222222222\n")
 	treasureTask, err := l.svcCtx.TreasureTaskModel.FindTreasureQuantity(l.ctx)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Print("3333333333333333333333\n")
 	associatedSubtask, err := l.svcCtx.AssociatedSubtaskModel.FindSubtaskInformation(l.ctx, "邀请好友助力", treasureTask.Id)
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
@@ -62,7 +58,6 @@ func (l *CreateAssistanceTaskLogic) CreateAssistanceTask(in *task.CreateUserPubl
 		Link:      associatedSubtask.Link,
 		Label:     associatedSubtask.Label,
 	}
-	fmt.Print("44444444444444444444444\n")
 	_, err = l.svcCtx.UserPublishesHelperTaskModel.Insert(l.ctx, userPublishes)
 	if err != nil {
 		return nil, err
