@@ -29,12 +29,6 @@ func NewCreateCuratorialTaskLogic(ctx context.Context, svcCtx *svc.ServiceContex
 
 // CreateCuratorialTask 创建策展任务
 func (l *CreateCuratorialTaskLogic) CreateCuratorialTask(in *task.CreatePublishTaskInput) (*task.Mistake, error) {
-	// 查询用户是否存在
-	_, err := QueryUser(in.Creator)
-	if err != nil {
-		logx.Error(fmt.Sprintf("查询用户是否存在失败，err:%v", err))
-		return &task.Mistake{Msg: err.Error()}, nil
-	}
 	// 查询资金数量
 	Amount, err := UserTokenAmount(in.Creator)
 	if err != nil {

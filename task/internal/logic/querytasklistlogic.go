@@ -29,7 +29,7 @@ func NewQueryTaskListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Que
 func (l *QueryTaskListLogic) QueryTaskList(in *task.PublishTaskInput) (*task.RePublishTask, error) {
 	// 获取数据总量
 	totalAmount, err := l.svcCtx.PublishTaskModel.FindPublishTaskAmount(l.ctx, int(in.Status), "status")
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		fmt.Printf("1err:%v\n", err)
 		return nil, err
 	}
@@ -41,13 +41,13 @@ func (l *QueryTaskListLogic) QueryTaskList(in *task.PublishTaskInput) (*task.ReP
 	}
 	// 查询数据
 	taskList, err := l.svcCtx.PublishTaskModel.FindPublishTaskList(l.ctx, in.Status, in.MaxNum, startLine, "status")
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		fmt.Printf("3err:%v\n", err)
 		return nil, err
 	}
 	// 查询任务要求
 	rePublishTaskBak, err := QueryTaskRequiresAndAssignsValue(l, taskList)
-	if err != nil {
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		fmt.Printf("4err:%v\n", err)
 		return nil, err
 	}

@@ -33,14 +33,16 @@ func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*ta
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
-	fmt.Print("1111111111111111111\n")
+	fmt.Print("111111111-------------1111111111\n")
 	// 查询任务要求详情
 	taskDemand, err := l.svcCtx.TaskDemandModel.FindList(l.ctx, publishTask.Id)
+	fmt.Printf("sfffffffffffffffff:%v\n", err)
 	if err != nil && err.Error() != "sql: no rows in result set" {
+		fmt.Printf("sssssssss:%v", err)
 		return nil, err
 	}
+	fmt.Print("444444444444\n")
 	// 赋值任务要求详情
-
 	rePublishTask := givePublishTask(publishTask, taskDemand)
 	// 获取推特详情（未完）+用户账户
 	fmt.Print("2222222222222222\n")
@@ -49,6 +51,7 @@ func (l *QueryTaskDetailsLogic) QueryTaskDetails(in *task.TaskDetailsInput) (*ta
 	if err != nil && err.Error() != "sql: no rows in result set" {
 		return nil, err
 	}
+	fmt.Print("5555555555555555\n")
 	// 获取任务参与者列表
 	participant, err := l.svcCtx.ParticipantModel.FinParticipantList(l.ctx, in.TaskId)
 	if err != nil && err.Error() != "sql: no rows in result set" {
