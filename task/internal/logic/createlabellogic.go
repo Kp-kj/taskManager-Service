@@ -28,7 +28,7 @@ func NewCreateLabelLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Creat
 func (l *CreateLabelLogic) CreateLabel(in *task.CreateLabelInput) (*task.Mistake, error) {
 	// 获取现有标签数量
 	amount, err := l.svcCtx.LabelModel.FindLabelAmount(l.ctx, in.UserId)
-	if err != nil {
+	if err != nil && err.Error() == "sql: no rows in result set" {
 		return &task.Mistake{Msg: "数据未查询到"}, err
 	}
 	// 判断标签数量

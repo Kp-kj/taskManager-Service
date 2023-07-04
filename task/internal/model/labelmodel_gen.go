@@ -99,6 +99,7 @@ func (m *defaultLabelModel) FindLabelAmount(ctx context.Context, creator string)
 }
 
 func (m *defaultLabelModel) Insert(ctx context.Context, data *Label) (sql.Result, error) {
+	// labelRows:="`creator`,`content`"
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?)", m.table, labelRowsExpectAutoSet)
 	ret, err := m.conn.ExecCtx(ctx, query, data.Creator, data.Content)
 	return ret, err
